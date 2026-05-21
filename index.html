@@ -1,589 +1,893 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find Jared a Job — UX Research & Human Factors</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0a0a0f; font-family: Georgia, 'Times New Roman', serif; color: #f0ede8; }
-    input, textarea, button { font-family: monospace; }
-    input::placeholder, textarea::placeholder { color: #4b5563; }
-    input:focus, textarea:focus { outline: none; border-color: #8b5cf6 !important; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>Sprout — Postpartum Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080F09;
+  --bg2: #0e1a10;
+  --card: #111e13;
+  --card2: #162019;
+  --border: rgba(100,200,120,0.12);
+  --green: #6fcf7a;
+  --green2: #4caf50;
+  --lime: #b5e853;
+  --teal: #4dd0c4;
+  --pink: #f48fb1;
+  --gold: #ffd54f;
+  --tx: #e8f5e9;
+  --txs: #a5c8a9;
+  --txm: #6a9b6e;
+  --glow: rgba(111,207,122,0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; width: 100%; }
 
-    .grid-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; }
-    .glow { position: fixed; top: -200px; right: -100px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-    .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(ellipse at 30% 0%, rgba(111,207,122,0.08), transparent 60%),
+              radial-gradient(ellipse at 80% 60%, rgba(77,208,196,0.06), transparent 50%),
+              var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--tx);
+}
 
-    header { padding: 48px 0 32px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 28px; }
-    .header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
-    .eyebrow { font-size: 11px; letter-spacing: 4px; color: #8b5cf6; margin-bottom: 8px; text-transform: uppercase; font-family: monospace; }
-    h1 { font-size: clamp(36px, 5vw, 58px); font-weight: 400; letter-spacing: -2px; line-height: 1; }
-    .subtitle { margin-top: 8px; color: #6b7280; font-size: 15px; font-family: monospace; }
-    .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .last-updated { font-size: 12px; color: #4b5563; font-family: monospace; }
+.phone {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  background: var(--bg2);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
 
-    .notice-box { background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.2); border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; font-size: 13px; font-family: monospace; color: #6ee7b7; line-height: 1.6; }
-    .notice-box strong { color: #34d399; }
+/* ── HEADER ── */
+.app-header {
+  background: linear-gradient(160deg, #0d1f10 0%, #0a1a0d 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(111,207,122,0.12), transparent 70%);
+  pointer-events: none;
+}
+.logo-mark {
+  width: 46px; height: 46px;
+  background: linear-gradient(135deg, #1e3a22, #2d5c34);
+  border-radius: 14px;
+  border: 1px solid rgba(111,207,122,0.3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(111,207,122,0.2);
+}
+.hd-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--green);
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+}
+.hd-sub {
+  font-size: 11px;
+  color: var(--txm);
+  font-weight: 500;
+  margin-top: 3px;
+  letter-spacing: 0.3px;
+}
 
-    .alert-box { background: rgba(139,92,246,0.07); border: 1px solid rgba(139,92,246,0.2); border-radius: 12px; padding: 20px 24px; margin-bottom: 28px; }
-    .alert-label { font-size: 11px; letter-spacing: 2px; color: #8b5cf6; margin-bottom: 12px; text-transform: uppercase; font-family: monospace; }
-    .alert-row { display: flex; gap: 10px; flex-wrap: wrap; }
-    .alert-input { flex: 1; min-width: 200px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 14px; color: #f0ede8; font-size: 14px; font-family: monospace; }
-    .btn-purple { background: #8b5cf6; border: none; border-radius: 8px; padding: 10px 22px; color: white; font-size: 13px; letter-spacing: 1px; white-space: nowrap; cursor: pointer; transition: opacity 0.2s; }
-    .btn-purple:hover { opacity: 0.85; }
-    .alert-hint { margin-top: 10px; font-size: 12px; color: #4b5563; font-family: monospace; }
-    .alert-status { margin-top: 10px; font-size: 13px; font-family: monospace; }
+/* ── CONTENT ── */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #1e3a22 transparent;
+}
+.content::-webkit-scrollbar { width: 3px; }
+.content::-webkit-scrollbar-thumb { background: #1e3a22; border-radius: 4px; }
 
-    .search-input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 18px; color: #f0ede8; font-size: 15px; font-family: Georgia, serif; margin-bottom: 16px; }
-    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 24px; }
-    .filter-btn { padding: 7px 16px; border-radius: 20px; font-size: 13px; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #9ca3af; cursor: pointer; transition: all 0.15s; }
-    .filter-btn.active { background: #8b5cf6; border-color: #8b5cf6; color: white; }
-    .count { margin-left: auto; font-size: 13px; color: #4b5563; font-family: monospace; }
+/* ── SCREENS ── */
+.scr { display: none; padding: 18px 16px 28px; }
+.scr.on { display: block; }
 
-    .jobs { display: flex; flex-direction: column; gap: 2px; }
-    .job-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 20px 24px; cursor: pointer; position: relative; transition: all 0.15s; }
-    .job-card:hover { background: rgba(255,255,255,0.04); }
-    .job-card.open { background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.3); }
-    .phd-badge { position: absolute; top: 16px; right: 20px; font-size: 10px; letter-spacing: 2px; color: #34d399; font-family: monospace; }
-    .card-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-    .card-left { flex: 1; min-width: 0; }
-    .job-title { font-size: 17px; font-weight: 400; color: #f0ede8; letter-spacing: -0.3px; margin-bottom: 4px; }
-    .job-meta { font-size: 14px; color: #6b7280; font-family: monospace; margin-bottom: 10px; }
-    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
-    .tag { padding: 3px 9px; border-radius: 4px; font-size: 11px; font-family: monospace; }
-    .card-right { text-align: right; flex-shrink: 0; }
-    .salary { font-size: 16px; color: #f0ede8; font-family: monospace; white-space: nowrap; }
-    .posted { font-size: 11px; color: #4b5563; font-family: monospace; margin-top: 4px; }
-    .source-link { font-size: 11px; color: #6b7280; font-family: monospace; margin-top: 3px; }
-    .card-detail { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
-    .job-card.open .card-detail { display: block; }
-    .job-desc { font-size: 14px; color: #9ca3af; line-height: 1.6; margin-bottom: 12px; }
-    .phd-note { font-size: 13px; color: #6ee7b7; font-family: monospace; margin-bottom: 14px; background: rgba(52,211,153,0.05); border: 1px solid rgba(52,211,153,0.15); border-radius: 6px; padding: 8px 12px; }
-    .card-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .btn-apply { display: inline-block; background: #8b5cf6; color: white; padding: 9px 20px; border-radius: 7px; font-size: 13px; letter-spacing: 1px; text-decoration: none; }
-    .btn-apply:hover { opacity: 0.85; }
-    .btn-tailor-open { background: none; border: 1px solid rgba(139,92,246,0.4); color: #a78bfa; padding: 9px 16px; border-radius: 7px; font-size: 13px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.15s; }
-    .btn-tailor-open:hover { background: rgba(139,92,246,0.12); }
+/* ── NAV BAR ── */
+.nav-bar {
+  background: #0a1209;
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 6px 0 10px;
+  flex-shrink: 0;
+}
+.nb {
+  flex: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  color: var(--txm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  transition: color 0.2s;
+  position: relative;
+}
+.nb.act { color: var(--green); }
+.nb svg { transition: transform 0.2s; }
+.nb.act svg { transform: scale(1.1); }
+.nb-label { font-size: 9.5px; }
 
-    .empty { text-align: center; padding: 60px; color: #4b5563; }
-    footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
-    footer p { font-size: 12px; color: #374151; font-family: monospace; letter-spacing: 1px; }
+/* ── SECTION HEADERS ── */
+.sec-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--txm);
+  margin: 20px 0 10px;
+}
+.sec-label:first-child { margin-top: 0; }
 
-    /* Modal */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: #0f0f18; border: 1px solid rgba(139,92,246,0.35); border-radius: 16px; width: 100%; max-width: 920px; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,0.6); }
-    .modal-header { padding: 22px 28px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-shrink: 0; }
-    .modal-eyebrow { font-size: 10px; letter-spacing: 3px; color: #8b5cf6; text-transform: uppercase; font-family: monospace; margin-bottom: 5px; }
-    .modal-job-title { font-size: 20px; font-weight: 400; color: #f0ede8; letter-spacing: -0.3px; }
-    .modal-job-meta { font-size: 13px; color: #6b7280; font-family: monospace; margin-top: 3px; }
-    .modal-close { background: none; border: 1px solid rgba(255,255,255,0.1); color: #6b7280; width: 34px; height: 34px; border-radius: 7px; font-size: 18px; cursor: pointer; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
-    .modal-close:hover { border-color: #f87171; color: #f87171; }
-    .modal-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
-    .modal-pane { flex: 1; display: flex; flex-direction: column; padding: 18px 24px; overflow: hidden; gap: 10px; }
-    .modal-pane + .modal-pane { border-left: 1px solid rgba(255,255,255,0.07); }
-    .pane-label { font-size: 10px; letter-spacing: 2px; color: #4b5563; text-transform: uppercase; font-family: monospace; flex-shrink: 0; }
-    .resume-textarea { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 14px; color: #d1d5db; font-size: 12.5px; line-height: 1.65; resize: none; min-height: 0; }
-    .output-box { flex: 1; background: rgba(139,92,246,0.04); border: 1px solid rgba(139,92,246,0.15); border-radius: 8px; padding: 14px; color: #d1d5db; font-size: 12.5px; line-height: 1.65; overflow-y: auto; white-space: pre-wrap; min-height: 0; }
-    .output-placeholder { color: #374151; font-style: italic; font-size: 13px; }
-    .modal-footer { padding: 14px 24px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
-    .api-key-wrap { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 200px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 0 12px; }
-    .api-key-icon { font-size: 13px; color: #4b5563; flex-shrink: 0; }
-    .api-key-input { flex: 1; background: none; border: none; padding: 9px 0; color: #f0ede8; font-size: 12px; }
-    .api-key-input:focus { outline: none; }
-    .btn-generate { background: #8b5cf6; border: none; border-radius: 7px; padding: 10px 22px; color: white; font-size: 13px; letter-spacing: 1px; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
-    .btn-generate:hover { opacity: 0.85; }
-    .btn-generate:disabled { opacity: 0.35; cursor: not-allowed; }
-    .btn-copy-out { background: none; border: 1px solid rgba(255,255,255,0.12); border-radius: 7px; padding: 10px 16px; color: #9ca3af; font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
-    .btn-copy-out:hover { border-color: #8b5cf6; color: #a78bfa; }
-    .tailor-status { font-size: 12px; font-family: monospace; margin-left: auto; }
-    .loading-dots::after { content: ''; animation: dots 1.2s steps(3,end) infinite; }
-    @keyframes dots { 0%,100%{content:'.'} 33%{content:'..'} 66%{content:'...'} }
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 6px;
+}
+.card-body {
+  font-size: 13px;
+  color: var(--txs);
+  line-height: 1.6;
+}
 
-    @media (max-width: 600px) { .card-inner { flex-direction: column; } .card-right { text-align: left; } }
-    @media (max-width: 700px) { .modal-body { flex-direction: column; } .modal-pane + .modal-pane { border-left: none; border-top: 1px solid rgba(255,255,255,0.07); } }
-  </style>
+/* ── MOOD CHECK-IN ── */
+.mood-hero {
+  background: linear-gradient(135deg, #0f2312, #0d1f17);
+  border: 1px solid rgba(111,207,122,0.2);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.mood-hero::before {
+  content: '';
+  position: absolute;
+  top: -20px; left: 50%; transform: translateX(-50%);
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(111,207,122,0.08), transparent 70%);
+  pointer-events: none;
+}
+.mood-date {
+  font-size: 11px;
+  color: var(--txm);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.mood-q {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--tx);
+  margin-bottom: 16px;
+  line-height: 1.35;
+}
+.mood-btns {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mb {
+  background: #1a2e1c;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--txs);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.mb:hover { border-color: var(--green); color: var(--green); }
+.mb.s { background: #1e3a22; border-color: var(--green); color: var(--green); }
+
+/* ── SYMPTOM CHECKLIST ── */
+.symp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.sb {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--txs);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+}
+.sb:hover { border-color: var(--teal); color: var(--teal); }
+.sb.s { background: #0f2226; border-color: var(--teal); color: var(--teal); }
+.sb-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.sb.s .sb-dot { background: var(--teal); }
+
+.save-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1e4d22, #2d6b33);
+  border: 1px solid rgba(111,207,122,0.3);
+  border-radius: 12px;
+  padding: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+.save-btn:hover { background: linear-gradient(135deg, #244f27, #347539); }
+
+.save-confirm {
+  display: none;
+  background: #0f2312;
+  border: 1px solid rgba(111,207,122,0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ── LEARN CARDS ── */
+.learn-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.learn-card-hd {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.learn-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+}
+.learn-card-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--tx);
+  flex: 1;
+}
+.learn-card-body {
+  display: none;
+  padding: 0 16px 14px;
+  font-size: 13px;
+  color: var(--txs);
+  line-height: 1.65;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.learn-card.open .learn-card-body { display: block; }
+.learn-chevron {
+  color: var(--txm);
+  transition: transform 0.2s;
+}
+.learn-card.open .learn-chevron { transform: rotate(180deg); }
+
+/* ── SELF CARE ── */
+.care-card {
+  background: linear-gradient(135deg, #0f1e12, #121f15);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.care-icon {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.care-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--tx);
+  margin-bottom: 4px;
+}
+.care-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background: #1a2e1c;
+  color: var(--lime);
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-bottom: 7px;
+}
+.care-body {
+  font-size: 13px;
+  color: var(--txs);
+  line-height: 1.55;
+}
+
+/* ── HELP SCREEN ── */
+.crisis-banner {
+  background: linear-gradient(135deg, #1a0f0f, #261212);
+  border: 1.5px solid rgba(244,143,177,0.3);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.crisis-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--pink);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.crisis-body {
+  font-size: 13px;
+  color: #e8b4c5;
+  line-height: 1.6;
+}
+.crisis-number {
+  display: inline-block;
+  background: rgba(244,143,177,0.12);
+  border: 1px solid rgba(244,143,177,0.25);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-weight: 700;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--pink);
+}
+
+.next-steps-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.next-steps-hd {
+  padding: 14px 16px 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  border-bottom: 1px solid var(--border);
+}
+.next-step {
+  display: flex;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.next-step:last-child { border-bottom: none; }
+.step-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e4d22, #2d6b33);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.step-title { font-size: 13px; font-weight: 700; color: var(--tx); margin-bottom: 3px; }
+.step-desc { font-size: 12px; color: var(--txs); line-height: 1.5; }
+.step-link {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  margin-top: 5px;
+  background: rgba(77,208,196,0.08);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+/* ── AFFIRMATION ── */
+.affirm-card {
+  background: linear-gradient(160deg, #0f1f20, #0d1a1e);
+  border: 1px solid rgba(77,208,196,0.2);
+  border-radius: 20px;
+  padding: 22px 20px;
+  text-align: center;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.affirm-card::before {
+  content: '"';
+  position: absolute;
+  top: -10px; left: 12px;
+  font-family: 'Playfair Display', serif;
+  font-size: 100px;
+  color: rgba(77,208,196,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.affirm-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+.affirm-sub {
+  font-size: 12px;
+  color: var(--txm);
+  font-weight: 500;
+}
+</style>
 </head>
 <body>
-<div class="grid-bg"></div>
-<div class="glow"></div>
-<div class="wrap">
 
-  <header>
-    <div class="header-inner">
-      <div>
-        <div class="eyebrow">✦ Curated for Jared</div>
-        <h1>UX Research Positions</h1>
-        <p class="subtitle">Remote-first · Human Factors PhD · UX & Data Research · Verified listings</p>
-      </div>
-      <div class="header-actions">
-        <span class="last-updated" id="lastUpdated"></span>
-      </div>
+<div class="phone">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="logo-mark">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M13 22V12" stroke="#6fcf7a" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M13 12C11 8 7 6 4 7c1 5 4 8 9 5" stroke="#6fcf7a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13 12c2-4 6-6 9-5-1 5-4 8-9 5" stroke="#b5e853" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="13" cy="6" r="2.5" fill="#6fcf7a" opacity="0.6"/>
+      </svg>
+    </div>
+    <div>
+      <div class="hd-title">Sprout</div>
+      <div class="hd-sub">A little support, every step of the way.</div>
     </div>
   </header>
 
-  <div class="notice-box">
-    <strong>✓ Real listings only.</strong> Every role below is verified from Built In, Glassdoor, Indeed, and company career pages as of March 2026. Apply links go directly to the source. Listings expire — if a link is dead, the role has likely been filled. The <strong style="color:#34d399">✦ PhD FIT</strong> badge marks roles that explicitly cite Human Factors, Engineering Psychology, HCI, or Cognitive Science PhDs in their requirements.
-  </div>
+  <!-- CONTENT -->
+  <div class="content">
 
-  <div class="alert-box">
-    <div class="alert-label">✉ Email These Listings</div>
-    <div class="alert-row">
-      <input class="alert-input" type="email" id="emailInput" placeholder="your@email.com" />
-      <button class="btn-purple" onclick="sendAlert()">Email Listings →</button>
-    </div>
-    <div id="alertStatus" class="alert-status"></div>
-    <p class="alert-hint">Opens your email client with the current filtered roles</p>
-  </div>
+    <!-- ══ HOME SCREEN ══ -->
+    <div class="scr on" id="home">
 
-  <input class="search-input" type="text" id="searchInput" placeholder="Search by title, company, or location..." oninput="renderJobs()" />
-  <div class="filter-row">
-    <button class="filter-btn active" onclick="setFilter('All',this)">All</button>
-    <button class="filter-btn" onclick="setFilter('Remote',this)">Remote</button>
-    <button class="filter-btn" onclick="setFilter('PhD Fit',this)">PhD Fit</button>
-    <button class="filter-btn" onclick="setFilter('UX Research',this)">UX Research</button>
-    <button class="filter-btn" onclick="setFilter('Data Research',this)">Data Research</button>
-    <button class="filter-btn" onclick="setFilter('$150K+',this)">$150K+</button>
-    <span class="count" id="countLabel">— roles</span>
-  </div>
-
-  <div class="jobs" id="jobList"></div>
-
-  <footer>
-    <p>CURATED FOR JARED · REMOTE-FIRST · UX RESEARCH & HUMAN FACTORS 2026</p>
-    <p style="margin-top:8px;color:#1f2937">Sources: builtin.com · glassdoor.com · indeed.com · greenhouse.io · company career pages</p>
-  </footer>
-</div>
-
-<!-- Resume Tailor Modal -->
-<div class="modal-overlay" id="tailorModal" onclick="handleOverlayClick(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-eyebrow">✦ AI Resume Tailor</div>
-        <div class="modal-job-title" id="modalJobTitle">—</div>
-        <div class="modal-job-meta" id="modalJobMeta">—</div>
+      <div class="mood-hero">
+        <div class="mood-date" id="today-date"></div>
+        <div class="mood-q">How are you feeling right now?</div>
+        <div class="mood-btns">
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Good</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Okay</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Low</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Anxious</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Frustrated</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Numb</button>
+        </div>
       </div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-pane">
-        <div class="pane-label">Your Resume</div>
-        <textarea class="resume-textarea" id="resumeInput" placeholder="Paste your resume here — work experience, skills, education, anything you have..."></textarea>
-      </div>
-      <div class="modal-pane">
-        <div class="pane-label">Tailored Version</div>
-        <div class="output-box" id="tailoredOutput"><span class="output-placeholder">Your AI-tailored resume will appear here.
 
-Paste your resume on the left, enter your API key below, then hit Generate.</span></div>
+      <div class="affirm-card">
+        <div class="affirm-text" id="affirm-text">You are doing better than you think you are.</div>
+        <div class="affirm-sub">Today's affirmation — tap to refresh</div>
+        <div style="position:absolute;bottom:14px;right:16px;cursor:pointer;" onclick="nextAffirm()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4dd0c4" stroke-width="2" stroke-linecap="round">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+          </svg>
+        </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <div class="api-key-wrap">
-        <span class="api-key-icon">🔑</span>
-        <input class="api-key-input" type="password" id="apiKeyInput" placeholder="sk-ant-... (Anthropic API key)" />
+
+      <div class="sec-label">Quick access</div>
+
+      <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="go('learn',document.querySelectorAll('.nb')[2])">
+        <div style="width:40px;height:40px;background:#1a2e1c;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b5e853" stroke-width="2" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--tx);">Learn about PPD & PPA</div>
+          <div style="font-size:12px;color:var(--txs);margin-top:2px;">What it is, what's normal, what to watch for</div>
+        </div>
       </div>
-      <button class="btn-generate" id="generateBtn" onclick="tailorResume()">✦ Generate</button>
-      <button class="btn-copy-out" onclick="copyOutput()">Copy</button>
-      <span class="tailor-status" id="tailorStatus"></span>
+
+      <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="go('help',document.querySelectorAll('.nb')[4])">
+        <div style="width:40px;height:40px;background:#1a1020;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f48fb1" stroke-width="2" stroke-linecap="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .92h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--tx);">Get support & resources</div>
+          <div style="font-size:12px;color:var(--txs);margin-top:2px;">Crisis line, therapy options, and next steps</div>
+        </div>
+      </div>
+
     </div>
-  </div>
-</div>
+
+    <!-- ══ CHECK-IN SCREEN ══ -->
+    <div class="scr" id="checkin">
+
+      <div class="sec-label">Daily check-in</div>
+
+      <div class="card">
+        <div class="card-title">How are you feeling today?</div>
+        <div class="mood-btns" style="justify-content:flex-start;margin-top:10px;">
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Good</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Okay</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Low</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Anxious</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Frustrated</button>
+          <button class="mb" onclick="selM(this)" aria-pressed="false">Numb</button>
+        </div>
+      </div>
+
+      <div class="sec-label" style="margin-top:14px;">Any of these lately?</div>
+      <div class="card-body" style="font-size:12px;color:var(--txm);margin-bottom:10px;">Tap everything that applies — this is just for you.</div>
+
+      <div class="symp-grid">
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Hard to sleep</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Sleeping too much</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Feeling empty</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Constant worry</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Crying often</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Mood swings</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>No appetite</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Feeling distant</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Irritable/angry</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Low energy</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Racing thoughts</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Hard to bond</button>
+      </div>
+
+      <button class="save-btn" onclick="savL()">Save today's check-in</button>
+      <div class="save-confirm" id="lok">✓ Check-in saved. You showed up for yourself today.</div>
+
+    </div>
+
+    <!-- ══ LEARN SCREEN ══ -->
+    <div class="scr" id="learn">
+
+      <div class="sec-label">Understanding what you're going through</div>
+
+      <div class="learn-card" id="lc1">
+        <div class="learn-card-hd" onclick="togLearn('lc1')">
+          <div class="learn-icon" style="background:#1a2e1c;">📖</div>
+          <div class="learn-card-title">What is postpartum depression (PPD)?</div>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="learn-card-body">
+          PPD is a mood disorder that can affect women after childbirth. It's more than the "baby blues" — it's a persistent sadness, emptiness, or disconnection that makes daily life hard. It affects roughly 1 in 7 new mothers and is not a character flaw or a sign of being a bad mother. It is a medical condition, and it is very treatable.
+        </div>
+      </div>
+
+      <div class="learn-card" id="lc2">
+        <div class="learn-card-hd" onclick="togLearn('lc2')">
+          <div class="learn-icon" style="background:#0f2226;">🌊</div>
+          <div class="learn-card-title">Baby blues vs. PPD — what's the difference?</div>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="learn-card-body">
+          <strong style="color:var(--teal);">Baby blues</strong> are very common (up to 80% of moms), start within a few days after birth, and usually resolve on their own within 2 weeks. Symptoms include weepiness, mood swings, and feeling overwhelmed.<br><br>
+          <strong style="color:var(--pink);">PPD</strong> lasts longer than 2 weeks, is more intense, and interferes with your ability to function. If you're still struggling at 2 weeks postpartum or feel like things are getting worse rather than better — that's a signal to reach out to your OB or midwife.
+        </div>
+      </div>
+
+      <div class="learn-card" id="lc3">
+        <div class="learn-card-hd" onclick="togLearn('lc3')">
+          <div class="learn-icon" style="background:#1a200f;">⚡</div>
+          <div class="learn-card-title">What is postpartum anxiety (PPA)?</div>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="learn-card-body">
+          PPA is actually more common than PPD, but less talked about. Symptoms include constant worry, racing thoughts, difficulty relaxing, feeling on edge, and physical symptoms like a pounding heart or shortness of breath. Many women with PPA don't "feel depressed" — they just feel like something is terribly wrong, even when it's not. PPA is real, common, and treatable.
+        </div>
+      </div>
+
+      <div class="learn-card" id="lc4">
+        <div class="learn-card-hd" onclick="togLearn('lc4')">
+          <div class="learn-icon" style="background:#1a1020;">💬</div>
+          <div class="learn-card-title">How to talk to your doctor about this</div>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="learn-card-body">
+          It can feel hard to say the words out loud. You can start simple:<br><br>
+          <em style="color:var(--teal);">"I haven't been feeling like myself since having the baby."</em><br><br>
+          <em style="color:var(--teal);">"I've been really anxious and I'm having a hard time."</em><br><br>
+          Your OB has heard this before. You won't shock them. You won't be judged. You will get help. It's okay to bring this up at any visit.
+        </div>
+      </div>
+
+      <div class="learn-card" id="lc5">
+        <div class="learn-card-hd" onclick="togLearn('lc5')">
+          <div class="learn-icon" style="background:#0f1a10;">🌿</div>
+          <div class="learn-card-title">Will I always feel this way?</div>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="learn-card-body">
+          No. With treatment — which can include therapy, medication, support groups, or a combination — the overwhelming majority of women recover fully. Most start feeling significantly better within weeks of starting treatment. Recovery is real and it happens. You deserve to feel well.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ SELF-CARE SCREEN ══ -->
+    <div class="scr" id="care">
+
+      <div class="sec-label">Small things that help</div>
+
+      <div class="care-card">
+        <div class="care-icon" style="background:#0f2312;">🌬️</div>
+        <div>
+          <div class="care-tag">Breathing</div>
+          <div class="care-title">4-7-8 calming breath</div>
+          <div class="care-body">Breathe in for 4 counts, hold for 7, exhale slowly for 8. Repeat 3–4 times. This activates your nervous system's rest response and can ease anxiety within minutes.</div>
+        </div>
+      </div>
+
+      <div class="care-card">
+        <div class="care-icon" style="background:#1a1020;">🛏️</div>
+        <div>
+          <div class="care-tag">Rest</div>
+          <div class="care-title">Permission to rest</div>
+          <div class="care-body">Rest is not laziness — it is medicine right now. You don't have to earn it. If someone offers to help, let them. If the dishes sit, they can wait. Your body and mind need recovery just as much as they did after any major event.</div>
+        </div>
+      </div>
+
+      <div class="care-card">
+        <div class="care-icon" style="background:#0f1f10;">🚶‍♀️</div>
+        <div>
+          <div class="care-tag">Movement</div>
+          <div class="care-title">5-minute gentle walk</div>
+          <div class="care-body">Even 5 minutes outside — baby in tow or alone — can meaningfully shift your mood. Sunlight, fresh air, and gentle movement all signal to your brain that you are safe and things are okay. You don't need a workout. Just move a little.</div>
+        </div>
+      </div>
+
+      <div class="care-card">
+        <div class="care-icon" style="background:#0f2226;">💬</div>
+        <div>
+          <div class="care-tag">Connection</div>
+          <div class="care-title">Text one person today</div>
+          <div class="care-body">Isolation makes everything harder. You don't have to explain everything — even a "thinking of you" or a meme to a friend counts. Connection doesn't have to be big to matter.</div>
+        </div>
+      </div>
+
+      <div class="care-card">
+        <div class="care-icon" style="background:#1a1a10;">☕</div>
+        <div>
+          <div class="care-tag">Nourishment</div>
+          <div class="care-title">Eat something real today</div>
+          <div class="care-body">Blood sugar crashes amplify anxiety and low mood. Even if you don't feel hungry, try to have something with protein — eggs, nuts, cheese, yogurt. You are feeding more than a body right now. You are feeding your resilience.</div>
+        </div>
+      </div>
+
+      <div class="care-card">
+        <div class="care-icon" style="background:#1a2e1c;">🌙</div>
+        <div>
+          <div class="care-tag">Mindfulness</div>
+          <div class="care-title">Name 5 things you can see</div>
+          <div class="care-body">A grounding exercise for moments when anxiety or overwhelm spikes. Slowly name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, 1 you can taste. It brings you back to the present moment.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ HELP SCREEN ══ -->
+    <div class="scr" id="help">
+
+      <div class="crisis-banner">
+        <div class="crisis-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f48fb1" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          In crisis right now?
+        </div>
+        <div class="crisis-body">
+          If you are having thoughts of harming yourself or others, please reach out immediately.
+        </div>
+        <div class="crisis-number">988 — Suicide & Crisis Lifeline</div>
+        <div style="font-size:12px;color:#c48fa0;margin-top:6px;">Call or text 988 · Available 24/7 · Free & confidential</div>
+        <div class="crisis-number" style="margin-top:8px;">Postpartum Support Intl: 1-800-944-4773</div>
+        <div style="font-size:12px;color:#c48fa0;margin-top:6px;">Text or call · Specialists in maternal mental health</div>
+      </div>
+
+      <div class="next-steps-card">
+        <div class="next-steps-hd">Not a crisis, but need support?</div>
+
+        <div class="next-step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Talk to your OB or midwife first</div>
+            <div class="step-desc">Your provider can screen you, refer you, and prescribe treatment if needed. You don't need to minimize what you're feeling — just tell them you haven't been yourself. It's okay to bring this up at any visit.</div>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Call 211 for local help</div>
+            <div class="step-desc">Free and confidential. Connects you to local mental health services, financial aid, and community support.</div>
+            <span class="step-link">dial or text 211</span>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Affordable therapy — Open Path</div>
+            <div class="step-desc">Sessions from $30–$80 for those who qualify. No referral needed. Many therapists specialize in perinatal mental health.</div>
+            <span class="step-link">openpathcollective.org</span>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">University training clinics</div>
+            <div class="step-desc">Free or very low cost therapy with supervised graduate student therapists. Search "[your city] university counseling clinic" to find options near you.</div>
+          </div>
+        </div>
+
+        <div class="next-step">
+          <div class="step-num">5</div>
+          <div>
+            <div class="step-title">Postpartum Support International</div>
+            <div class="step-desc">PSI has a provider directory of therapists who specialize in maternal mental health, plus free support groups.</div>
+            <span class="step-link">postpartum.net/get-help</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- NAV BAR -->
+  <nav class="nav-bar" role="tablist">
+    <button class="nb act" onclick="go('home',this)" role="tab" aria-selected="true" aria-label="Home">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nb-label">Home</span>
+    </button>
+    <button class="nb" onclick="go('checkin',this)" role="tab" aria-selected="false" aria-label="Check in">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span class="nb-label">Check in</span>
+    </button>
+    <button class="nb" onclick="go('learn',this)" role="tab" aria-selected="false" aria-label="Learn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      <span class="nb-label">Learn</span>
+    </button>
+    <button class="nb" onclick="go('care',this)" role="tab" aria-selected="false" aria-label="Self-care">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C10 8 6 6 3 7c1 5 4 8 9 5"/><path d="M12 12c2-4 6-6 9-5-1 5-4 8-9 5"/></svg>
+      <span class="nb-label">Self-care</span>
+    </button>
+    <button class="nb" onclick="go('help',this)" role="tab" aria-selected="false" aria-label="Help">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .92h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      <span class="nb-label">Help</span>
+    </button>
+  </nav>
+
+</div><!-- /phone -->
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-// REAL VERIFIED LISTINGS — sourced March 2026
-// Sources: builtin.com, glassdoor.com, indeed.com, greenhouse.io
-// ─────────────────────────────────────────────────────────────────────────────
-const JOBS = [
-  {
-    id: 1,
-    title: "Senior Researcher — Ads Experiences",
-    company: "Netflix",
-    location: "Remote (US)",
-    salary: "$130K–$470K",
-    salaryMin: 130,
-    tags: ["Remote", "PhD Fit", "UX Research", "$150K+"],
-    phdNote: "PhD in Psychology, HCI, Human Factors, or related field preferred. Netflix's wide comp band reflects PhD-level comp.",
-    description: "Partner with cross-functional teams including Business Stakeholders, Design, Product Management, Engineers, and Data Scientists to lead and deliver research and insights for Netflix's advertising product. You'll guide the development of advertising experiences and features for 300M+ members.",
-    source: "Indeed / Netflix Careers",
-    applyUrl: "https://jobs.netflix.com/search?q=ux+researcher"
-  },
-  {
-    id: 2,
-    title: "UX Researcher, Qualitative",
-    company: "Meta",
-    location: "Remote (US)",
-    salary: "$164K–$227K",
-    salaryMin: 164,
-    tags: ["Remote", "PhD Fit", "UX Research", "$150K+"],
-    phdNote: "Meta explicitly seeks PhD backgrounds in HCI, Psychology, or Cognitive Science for this level. Strong fit for human factors.",
-    description: "Work closely with product and business teams to identify research topics. Act as a thought leader in the domain of research, while advocating for the people who use Meta's products. Lead end-to-end qualitative research across Instagram, Facebook, or Reality Labs.",
-    source: "Glassdoor / Meta Careers",
-    applyUrl: "https://www.metacareers.com/jobs/?q=ux+researcher&is_remote_only=true"
-  },
-  {
-    id: 3,
-    title: "Senior Researcher",
-    company: "GitHub",
-    location: "Remote (US)",
-    salary: "$140K–$200K",
-    salaryMin: 140,
-    tags: ["Remote", "PhD Fit", "UX Research", "$150K+"],
-    phdNote: "GitHub Customer Research team explicitly cites degrees in human behavior fields: HCI, Psychology, Cognitive Science. PhD a strong differentiator.",
-    description: "Join GitHub's Customer Research team as part of the Design organization. Define and scope end-to-end research plans studying how 180M+ developers collaborate and build software. Work closely with designers, PMs, and data teams to help GitHub build tools and experiences for the future of software development.",
-    source: "Indeed / GitHub Careers",
-    applyUrl: "https://www.github.careers/careers-home/jobs?q=researcher"
-  },
-  {
-    id: 4,
-    title: "Senior Director of UX Product Design",
-    company: "Apollo.io",
-    location: "Remote (US)",
-    salary: "$247K–$350K",
-    salaryMin: 247,
-    tags: ["Remote", "UX Research", "$150K+"],
-    phdNote: null,
-    description: "Lead design strategy and vision for Apollo.io, scaling a user-centered design team while driving operational excellence and cross-functional collaboration. Top skills include AI-driven experiences and modern design tools. Easy Apply via Built In.",
-    source: "Built In — posted within 14 hours",
-    applyUrl: "https://builtin.com/job/senior-director-ux-product-design/7346158"
-  },
-  {
-    id: 5,
-    title: "Senior Product Design Manager",
-    company: "Upstart",
-    location: "Remote (US)",
-    salary: "$199K–$275K",
-    salaryMin: 199,
-    tags: ["Remote", "UX Research", "$150K+"],
-    phdNote: null,
-    description: "Lead a team of product designers at Upstart, an AI-powered lending platform, shaping lending experiences and overseeing design quality and team development across products. Figma and modern design and research tools required. Easy Apply via Built In.",
-    source: "Built In — posted within 14 hours",
-    applyUrl: "https://builtin.com/job/senior-product-design-manager/7334449"
-  },
-  {
-    id: 6,
-    title: "Staff Product Designer, Mobile Platform",
-    company: "ServiceNow",
-    location: "Remote or Hybrid (San Francisco, CA)",
-    salary: "$167K–$291K",
-    salaryMin: 167,
-    tags: ["Remote", "UX Research", "$150K+"],
-    phdNote: null,
-    description: "Lead product design initiatives, create user-centered mobile experiences, collaborate across teams, and integrate AI into workflows while influencing design strategy. Top skills: AI Integration, Design Systems, Human-Centered Design.",
-    source: "Built In — posted 3 days ago",
-    applyUrl: "https://builtin.com/job/staff-product-designer-mobile-platform/8235666"
-  },
-  {
-    id: 7,
-    title: "Product Designer, Design Systems",
-    company: "Dropbox",
-    location: "Remote (US)",
-    salary: "$183K–$247K",
-    salaryMin: 183,
-    tags: ["Remote", "UX Research", "$150K+"],
-    phdNote: null,
-    description: "Lead and evolve design systems for iOS, ensuring consistency and usability across Dropbox's mobile experiences. Collaborate with engineers and product managers, driving accessibility and performance standards. Top skills: Figma, Human Interface Guidelines, iOS.",
-    source: "Built In — posted 5 days ago",
-    applyUrl: "https://builtin.com/job/product-designer-design-systems/7587376"
-  },
-  {
-    id: 8,
-    title: "Product Designer II",
-    company: "Coinbase",
-    location: "Remote (US)",
-    salary: "$145K–$170K",
-    salaryMin: 145,
-    tags: ["Remote", "UX Research", "$150K+"],
-    phdNote: null,
-    description: "Enhance user experiences, design intuitive web and mobile products, collaborate with teams, and execute on product strategies for one of the world's leading crypto platforms. AI Tools, Figma, and Prototyping Tools required.",
-    source: "Built In — posted 5 days ago",
-    applyUrl: "https://builtin.com/job/product-designer-ii/8218829"
-  },
-  {
-    id: 9,
-    title: "UX Researcher (Quantitative)",
-    company: "Confidential (via Jobgether)",
-    location: "Remote (US)",
-    salary: "$110K–$155K",
-    salaryMin: 110,
-    tags: ["Remote", "PhD Fit", "UX Research", "Data Research"],
-    phdNote: "Explicitly requires PhD or MS in experimental psychology, human factors, HCI, or survey science. Strong quantitative research fit.",
-    description: "Lead independent quantitative studies, analyze complex data, and translate findings into actionable insights for cross-functional product and engineering teams. Mentor colleagues, advocate for users, and influence product roadmaps. Self-driven researcher with strong statistical expertise required.",
-    source: "Lever / Jobgether",
-    applyUrl: "https://jobs.lever.co/jobgether/07407ee8-86e5-4b0e-a27e-2220a9f8cbb2"
-  },
-  {
-    id: 10,
-    title: "Senior UX Researcher",
-    company: "Blueprint Technologies",
-    location: "Remote (PST hours)",
-    salary: "$130K–$175K",
-    salaryMin: 130,
-    tags: ["Remote", "PhD Fit", "UX Research", "$150K+"],
-    phdNote: "Explicitly lists PhD in Cognitive/Experimental Psychology, Human Factors, HCI, or Statistics as a top credential. Excellent match.",
-    description: "Shape high-impact user experiences within communication and collaboration workflows. Develop and execute robust research plans, conduct both qualitative and quantitative studies, and identify opportunities for AI-enabled enhancements within calling, meeting, and communication scenarios.",
-    source: "Greenhouse / Blueprint Technologies",
-    applyUrl: "https://job-boards.greenhouse.io/bpcs/jobs/7648753"
-  },
-  {
-    id: 11,
-    title: "Senior UX Researcher — Mixed Methods",
-    company: "Microsoft (GitHub Copilot / AI)",
-    location: "Remote (US)",
-    salary: "$103K–$273K",
-    salaryMin: 103,
-    tags: ["Remote", "PhD Fit", "UX Research", "Data Research", "$150K+"],
-    phdNote: "Microsoft explicitly lists Doctorate in Human Factors Engineering, HCI, Behavioral Science, or related field as a qualifying credential — with PhD requiring only 1 year experience.",
-    description: "Share insights that activate design and engineering processes for AI-powered developer products. Drive alignment in cross-functional teams, create compelling research narratives for senior leadership, and coach PMs and designers in their own research practice. PhD with 1+ year experience qualifies.",
-    source: "Indeed / Microsoft Careers",
-    applyUrl: "https://jobs.careers.microsoft.com/global/en/search?q=ux+researcher&lc=United+States&l=en_us&pgSz=20&o=Relevance&flt=true"
-  },
-  {
-    id: 12,
-    title: "Senior UX Researcher (Quantitative/Evaluative Focus)",
-    company: "Motorola Solutions",
-    location: "Remote (Chicago, IL base)",
-    salary: "$120K–$165K",
-    salaryMin: 120,
-    tags: ["Remote", "PhD Fit", "UX Research", "Data Research"],
-    phdNote: "Role explicitly seeks 6+ years of hands-on research with advanced degree in HCI, Cognitive Science, or Human Factors preferred.",
-    description: "Lead benchmark and usability studies across planning protocol design analysis for Motorola Solutions' public safety products. End-to-end usability testing with strong quantitative evaluative focus. Experience 6+ years in large matrixed organizations required.",
-    source: "Indeed / Motorola Careers",
-    applyUrl: "https://motorolasolutions.wd5.myworkdayjobs.com/Careers?q=ux+researcher"
-  },
-  {
-    id: 13,
-    title: "Senior Mixed-Methods Research Manager",
-    company: "Federal Agency (via contractor)",
-    location: "Remote (US)",
-    salary: "$130K–$170K",
-    salaryMin: 130,
-    tags: ["Remote", "PhD Fit", "UX Research", "Data Research"],
-    phdNote: "Glassdoor listing explicitly mentions MS/PhD in Organizational Psychology or Human Factors. Power BI, Qualtrics, Tableau, and sentiment analytics required.",
-    description: "Support a federal agency's customer experience and research initiatives as part of a multidisciplinary contractor team. Design surveys, run sentiment analytics, visualize insights with Power BI and Tableau, and translate findings into CX recommendations. Strong fit for Jared's academic background.",
-    source: "Glassdoor — remote human factors listings",
-    applyUrl: "https://www.glassdoor.com/Job/remote-human-factors-jobs-SRCH_IL.0,6_IS11047_KO7,20.htm"
-  },
-  {
-    id: 14,
-    title: "Staff UX Researcher",
-    company: "Vetcove",
-    location: "Remote (US)",
-    salary: "$130K–$180K",
-    salaryMin: 130,
-    tags: ["Remote", "PhD Fit", "UX Research", "Data Research"],
-    phdNote: "Role is scoped at Senior or Staff level depending on experience and impact. PhD background strongly differentiates at Staff level.",
-    description: "Own insight quality, synthesis, and reporting for core product research at Vetcove, a fast-growing veterinary supply platform. Guide junior researchers without micromanagement. Remote, full home office setup provided.",
-    source: "Indeed / Vetcove Careers",
-    applyUrl: "https://www.vetcove.com/careers"
-  },
-  {
-    id: 15,
-    title: "UX Data Researcher / Research Scientist",
-    company: "EagleView",
-    location: "Remote (US)",
-    salary: "$115K–$160K",
-    salaryMin: 115,
-    tags: ["Remote", "PhD Fit", "UX Research", "Data Research"],
-    phdNote: "EagleView's research roles explicitly seek human behavior backgrounds. Strong data + UX hybrid — ideal for engineering psychology PhD.",
-    description: "Analyze user behavior data and drive UX improvements for EagleView's geospatial and property intelligence platform. Blend qualitative and quantitative methods to guide design and product decisions across government, construction, and insurance verticals.",
-    source: "Glassdoor / Indeed — EagleView",
-    applyUrl: "https://www.eagleview.com/company/careers/"
-  },
+// Set today's date
+const d = new Date();
+document.getElementById('today-date').textContent = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+// Navigation
+function go(id, btn) {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => { b.classList.remove('act'); b.setAttribute('aria-selected','false'); });
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('act');
+  btn.setAttribute('aria-selected','true');
+}
+
+// Mood buttons — single select
+function selM(el) {
+  const parent = el.closest('.mood-btns');
+  parent.querySelectorAll('.mb').forEach(b => { b.classList.remove('s'); b.setAttribute('aria-pressed','false'); });
+  el.classList.add('s'); el.setAttribute('aria-pressed','true');
+}
+
+// Symptom toggle
+function togS(el) {
+  const p = el.getAttribute('aria-pressed') === 'true';
+  el.classList.toggle('s'); el.setAttribute('aria-pressed', String(!p));
+}
+
+// Save confirm
+function savL() {
+  const d = document.getElementById('lok');
+  d.style.display = 'block';
+  setTimeout(() => { d.style.display = 'none'; }, 2800);
+}
+
+// Learn accordion
+function togLearn(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+// Affirmations
+const affirms = [
+  "You are doing better than you think you are.",
+  "Asking for help is one of the bravest things a mother can do.",
+  "This season is hard. That doesn't mean you are failing.",
+  "You don't have to feel okay to be a good mother.",
+  "Healing is not linear. Every day counts.",
+  "You deserved care before you became a mother. You still deserve it now.",
+  "The fact that you're here, trying, matters.",
+  "Your feelings are valid. Your struggles are real. Your recovery is possible.",
 ];
-
-const TAG_COLORS = {
-  "Remote":        { bg:"#d1fae5", color:"#065f46" },
-  "PhD Fit":       { bg:"#d1fae5", color:"#065f46" },
-  "UX Research":   { bg:"#ede9fe", color:"#5b21b6" },
-  "Data Research": { bg:"#fce7f3", color:"#9d174d" },
-  "$150K+":        { bg:"#fef3c7", color:"#92400e" },
-};
-
-let activeFilter = "All";
-let openJobId = null;
-let currentJob = null;
-
-function getFiltered() {
-  const q = (document.getElementById("searchInput").value || "").toLowerCase();
-  return JOBS.filter(j => {
-    const fMatch = activeFilter === "All" || j.tags.includes(activeFilter);
-    const sMatch = !q || j.title.toLowerCase().includes(q) || j.company.toLowerCase().includes(q) || j.location.toLowerCase().includes(q);
-    return fMatch && sMatch;
-  });
+let aIdx = 0;
+function nextAffirm() {
+  aIdx = (aIdx + 1) % affirms.length;
+  document.getElementById('affirm-text').textContent = affirms[aIdx];
 }
-
-function setFilter(f, btn) {
-  activeFilter = f;
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  renderJobs();
-}
-
-function toggleJob(id) {
-  openJobId = openJobId === id ? null : id;
-  renderJobs();
-}
-
-function renderJobs() {
-  const filtered = getFiltered();
-  const sorted = [...filtered].sort((a, b) => b.salaryMin - a.salaryMin);
-  document.getElementById("countLabel").textContent = filtered.length + " roles";
-  document.getElementById("lastUpdated").textContent = "Verified March 2026";
-  const list = document.getElementById("jobList");
-
-  if (!filtered.length) {
-    list.innerHTML = `<div class="empty"><p style="font-family:monospace;color:#4b5563">No roles match your current filters.</p></div>`;
-    return;
-  }
-
-  list.innerHTML = sorted.map(job => {
-    const tagHTML = job.tags.map(tag => {
-      const c = TAG_COLORS[tag] || { bg:"#1f2937", color:"#9ca3af" };
-      return `<span class="tag" style="background:${c.bg};color:${c.color}">${tag}</span>`;
-    }).join("");
-
-    const isPhd = job.tags.includes("PhD Fit");
-
-    return `<div class="job-card${openJobId === job.id ? " open" : ""}" onclick="toggleJob(${job.id})">
-      ${isPhd ? `<div class="phd-badge">✦ PhD FIT</div>` : ""}
-      <div class="card-inner">
-        <div class="card-left">
-          <div class="job-title">${job.title}</div>
-          <div class="job-meta">${job.company} · ${job.location}</div>
-          <div class="tags">${tagHTML}</div>
-        </div>
-        <div class="card-right">
-          <div class="salary">${job.salary}</div>
-          <div class="source-link">${job.source}</div>
-        </div>
-      </div>
-      <div class="card-detail">
-        ${job.phdNote ? `<div class="phd-note">🎓 PhD Relevance: ${job.phdNote}</div>` : ""}
-        <p class="job-desc">${job.description}</p>
-        <div class="card-actions">
-          <a class="btn-apply" href="${job.applyUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Apply / View Listing →</a>
-          <button class="btn-tailor-open" onclick="event.stopPropagation(); openTailor(${job.id})">✦ Tailor Resume</button>
-        </div>
-      </div>
-    </div>`;
-  }).join("");
-}
-
-// Modal
-function openTailor(jobId) {
-  currentJob = JOBS.find(j => j.id === jobId);
-  document.getElementById("modalJobTitle").textContent = currentJob.title;
-  document.getElementById("modalJobMeta").textContent = currentJob.company + " · " + currentJob.location + " · " + currentJob.salary;
-  document.getElementById("tailoredOutput").innerHTML = '<span class="output-placeholder">Your AI-tailored resume will appear here.\n\nPaste your resume on the left, enter your API key below, then hit Generate.</span>';
-  document.getElementById("tailorStatus").textContent = "";
-  document.getElementById("tailorModal").classList.add("open");
-  document.body.style.overflow = "hidden";
-  const saved = localStorage.getItem("uxboard_apikey");
-  if (saved) document.getElementById("apiKeyInput").value = saved;
-}
-
-function closeModal() {
-  document.getElementById("tailorModal").classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById("tailorModal")) closeModal();
-}
-
-async function tailorResume() {
-  const resume = document.getElementById("resumeInput").value.trim();
-  const apiKey = document.getElementById("apiKeyInput").value.trim();
-  const btn = document.getElementById("generateBtn");
-  const status = document.getElementById("tailorStatus");
-  const output = document.getElementById("tailoredOutput");
-
-  if (!resume) { status.style.color = "#f87171"; status.textContent = "✗ Paste your resume first."; return; }
-  if (!apiKey.startsWith("sk-ant-")) { status.style.color = "#f87171"; status.textContent = "✗ Enter a valid Anthropic API key."; return; }
-  if (!currentJob) return;
-
-  localStorage.setItem("uxboard_apikey", apiKey);
-  btn.disabled = true;
-  output.innerHTML = '<span class="output-placeholder loading-dots">Tailoring your resume</span>';
-  status.style.color = "#8b5cf6"; status.textContent = "";
-
-  const prompt = `You are an expert resume writer and career coach specializing in UX research and human factors roles. Tailor the resume below for the following job.
-
-JOB: ${currentJob.title}
-COMPANY: ${currentJob.company}
-LOCATION: ${currentJob.location}
-SALARY: ${currentJob.salary}
-DESCRIPTION: ${currentJob.description}
-${currentJob.phdNote ? `\nPHD RELEVANCE NOTE: ${currentJob.phdNote}` : ""}
-
-RESUME:
-${resume}
-
-Please rewrite the resume to:
-1. Mirror the exact language and keywords from the job description
-2. Prominently feature the PhD in Human Factors / Engineering Psychology as a top credential
-3. Reorder and emphasize the most relevant experience and research methods for this specific role
-4. Quantify achievements where possible
-5. Adjust the summary/objective to speak directly to this role and company
-6. Keep all factual information accurate — do not invent experience
-7. Maintain a clean, professional plain text format
-
-Return only the tailored resume text — no commentary, no preamble.`;
-
-  try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true"
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 2000,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    const text = data.content?.map(b => b.text || "").join("") || "";
-    output.textContent = text;
-    status.style.color = "#34d399"; status.textContent = "✓ Done";
-  } catch (err) {
-    output.innerHTML = '<span class="output-placeholder">Error: ' + err.message + '</span>';
-    status.style.color = "#f87171"; status.textContent = "✗ Failed";
-  } finally {
-    btn.disabled = false;
-  }
-}
-
-function copyOutput() {
-  const text = document.getElementById("tailoredOutput").textContent;
-  if (!text || text.includes("will appear here")) return;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector(".btn-copy-out");
-    btn.textContent = "Copied ✓";
-    setTimeout(() => btn.textContent = "Copy", 2000);
-  });
-}
-
-function sendAlert() {
-  const email = document.getElementById("emailInput").value.trim();
-  const status = document.getElementById("alertStatus");
-  if (!email.includes("@")) { status.style.color = "#f87171"; status.textContent = "✗ Please enter a valid email address."; return; }
-  const filtered = getFiltered().slice(0, 8);
-  const lines = filtered.map((j, i) => `${i+1}. ${j.title} at ${j.company}\n   ${j.location} | ${j.salary}\n   ${j.tags.join(", ")}\n   Apply: ${j.applyUrl}`).join("\n\n");
-  const subject = encodeURIComponent(`Job Listings for Jared — ${getFiltered().length} Roles (March 2026)`);
-  const body = encodeURIComponent(`Hi Jared,\n\nHere are your current curated remote UX/Human Factors job listings (filter: "${activeFilter}"):\n\n${lines}\n\n⚠️ These are real listings — apply links go directly to company career pages or job boards. Listings may expire.\n\n— Find Jared a Job`);
-  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-  status.style.color = "#34d399"; status.textContent = "✓ Email client opened!";
-}
-
-renderJobs();
+// Start on a random one
+aIdx = Math.floor(Math.random() * affirms.length);
+document.getElementById('affirm-text').textContent = affirms[aIdx];
 </script>
 </body>
 </html>
