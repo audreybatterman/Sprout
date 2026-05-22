@@ -27,6 +27,23 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { overflow-x: hidden; width: 100%; }
 
+/* Skip-to-content for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 8px;
+  background: var(--green);
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 0 0 8px 8px;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 9999;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
 body {
   display: flex;
   justify-content: center;
@@ -49,6 +66,123 @@ body {
   flex-direction: column;
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
+  position: relative;
+}
+
+/* ── DISCLAIMER OVERLAY ── */
+.disclaimer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+.disclaimer-overlay.hidden { display: none; }
+.disclaimer-box {
+  background: #0d1f10;
+  border: 1.5px solid rgba(111,207,122,0.3);
+  border-radius: 20px;
+  padding: 28px 22px 22px;
+  max-width: 390px;
+  width: 100%;
+  box-shadow: 0 0 60px rgba(111,207,122,0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.disc-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.disc-logo-mark {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, #1e3a22, #2d5c34);
+  border-radius: 13px;
+  border: 1px solid rgba(111,207,122,0.3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 18px rgba(111,207,122,0.2);
+}
+.disc-app-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1.1;
+}
+.disc-tagline {
+  font-size: 11px;
+  color: var(--txm);
+  font-weight: 500;
+  margin-top: 2px;
+}
+.disc-nurse {
+  font-size: 10px;
+  color: var(--txm);
+  font-style: italic;
+  margin-top: 1px;
+}
+.disc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 12px;
+}
+.disc-body {
+  font-size: 13px;
+  color: var(--txs);
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+.disc-body strong { color: var(--tx); }
+.disc-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 14px 0;
+}
+.disc-crisis {
+  background: #1a0f0f;
+  border: 1px solid rgba(244,143,177,0.3);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+.disc-crisis-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--pink);
+  margin-bottom: 5px;
+}
+.disc-crisis-body {
+  font-size: 12px;
+  color: #e8b4c5;
+  line-height: 1.55;
+}
+.disc-agree-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1e4d22, #2d6b33);
+  border: 1px solid rgba(111,207,122,0.35);
+  border-radius: 12px;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+.disc-agree-btn:hover,
+.disc-agree-btn:focus {
+  background: linear-gradient(135deg, #244f27, #347539);
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
 }
 
 /* ── HEADER ── */
@@ -95,6 +229,13 @@ body {
   margin-top: 3px;
   letter-spacing: 0.3px;
 }
+.hd-nurse {
+  font-size: 10px;
+  color: var(--txm);
+  font-weight: 400;
+  font-style: italic;
+  margin-top: 1px;
+}
 
 /* ── CONTENT ── */
 .content {
@@ -118,9 +259,13 @@ body {
   display: flex;
   padding: 6px 0 10px;
   flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.nav-bar::-webkit-scrollbar { display: none; }
 .nb {
   flex: 1;
+  min-width: 52px;
   background: none;
   border: none;
   cursor: pointer;
@@ -135,11 +280,16 @@ body {
   font-weight: 600;
   transition: color 0.2s;
   position: relative;
+  border-radius: 8px;
+}
+.nb:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
 }
 .nb.act { color: var(--green); }
 .nb svg { transition: transform 0.2s; }
 .nb.act svg { transform: scale(1.1); }
-.nb-label { font-size: 9.5px; }
+.nb-label { font-size: 9px; }
 
 /* ── SECTION HEADERS ── */
 .sec-label {
@@ -226,6 +376,7 @@ body {
   display: flex; align-items: center; gap: 6px;
 }
 .mb:hover { border-color: var(--green); color: var(--green); }
+.mb:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .mb.s { background: #1e3a22; border-color: var(--green); color: var(--green); }
 
 /* ── SYMPTOM CHECKLIST ── */
@@ -250,6 +401,7 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 .sb:hover { border-color: var(--teal); color: var(--teal); }
+.sb:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 .sb.s { background: #0f2226; border-color: var(--teal); color: var(--teal); }
 .sb-dot {
   width: 8px; height: 8px;
@@ -275,6 +427,7 @@ body {
   transition: all 0.2s;
 }
 .save-btn:hover { background: linear-gradient(135deg, #244f27, #347539); }
+.save-btn:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 
 .save-confirm {
   display: none;
@@ -303,7 +456,14 @@ body {
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  font-family: inherit;
 }
+.learn-card-hd:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; border-radius: 16px; }
 .learn-icon {
   width: 38px; height: 38px;
   border-radius: 10px;
@@ -319,17 +479,17 @@ body {
 }
 .learn-card-body {
   display: none;
-  padding: 0 16px 14px;
+  padding: 12px 16px 14px;
   font-size: 13px;
   color: var(--txs);
   line-height: 1.65;
   border-top: 1px solid var(--border);
-  padding-top: 12px;
 }
 .learn-card.open .learn-card-body { display: block; }
 .learn-chevron {
   color: var(--txm);
   transition: transform 0.2s;
+  flex-shrink: 0;
 }
 .learn-card.open .learn-chevron { transform: rotate(180deg); }
 
@@ -407,7 +567,6 @@ body {
   font-size: 14px;
   color: var(--pink);
 }
-
 .next-steps-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -465,7 +624,9 @@ body {
   margin-bottom: 14px;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
+.affirm-card:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 .affirm-card::before {
   content: '"';
   position: absolute;
@@ -489,16 +650,358 @@ body {
   color: var(--txm);
   font-weight: 500;
 }
+
+/* ══ JOURNAL SCREEN ══ */
+.journal-compose {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.journal-compose-hd {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 4px;
+}
+.journal-compose-sub {
+  font-size: 12px;
+  color: var(--txm);
+  margin-bottom: 12px;
+}
+.journal-prompt-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.prompt-chip {
+  background: #1a2e1c;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txs);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.18s;
+}
+.prompt-chip:hover, .prompt-chip:focus-visible { border-color: var(--green); color: var(--green); outline: none; }
+.prompt-chip-other { border-style: dashed; }
+.journal-textarea {
+  width: 100%;
+  background: #0d1a0f;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--tx);
+  resize: none;
+  min-height: 110px;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+  margin-bottom: 10px;
+}
+.journal-textarea::placeholder { color: var(--txm); }
+.journal-textarea:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 3px rgba(111,207,122,0.1); }
+.journal-save-btn {
+  background: linear-gradient(135deg, #1e4d22, #2d6b33);
+  border: 1px solid rgba(111,207,122,0.3);
+  border-radius: 10px;
+  padding: 11px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.journal-save-btn:hover { background: linear-gradient(135deg, #244f27, #347539); }
+.journal-save-btn:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.journal-entry {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  position: relative;
+}
+.journal-entry-date {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--txm);
+  letter-spacing: 0.4px;
+  margin-bottom: 5px;
+}
+.journal-entry-mood {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  background: #1e3a22;
+  color: var(--green);
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin-bottom: 7px;
+}
+.journal-entry-text {
+  font-size: 13px;
+  color: var(--txs);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.journal-delete {
+  position: absolute;
+  top: 10px; right: 12px;
+  background: none;
+  border: none;
+  color: var(--txm);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  line-height: 1;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+.journal-delete:hover, .journal-delete:focus-visible { color: var(--pink); outline: 2px solid var(--pink); }
+.journal-empty {
+  text-align: center;
+  padding: 30px 0;
+  color: var(--txm);
+  font-size: 13px;
+}
+.journal-entry-symptoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+.jxs-chip {
+  font-size: 10px;
+  font-weight: 600;
+  background: #0f2226;
+  color: var(--teal);
+  border-radius: 5px;
+  padding: 2px 7px;
+}
+
+/* ══ CALENDAR SCREEN ══ */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.cal-nav-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--txs);
+  transition: all 0.2s;
+}
+.cal-nav-btn:hover { border-color: var(--green); color: var(--green); }
+.cal-nav-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.cal-month-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--tx);
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.cal-dow {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--txm);
+  letter-spacing: 0.5px;
+  padding-bottom: 6px;
+}
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--txs);
+  position: relative;
+  cursor: default;
+  background: transparent;
+}
+.cal-day.today {
+  background: #1e3a22;
+  color: var(--green);
+  font-weight: 800;
+}
+.cal-day.has-entry {
+  cursor: pointer;
+  background: #0f2226;
+  color: var(--teal);
+}
+.cal-day.has-entry:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.cal-day .mood-dot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px; height: 5px;
+  border-radius: 50%;
+}
+.cal-day.empty { color: transparent; pointer-events: none; }
+.cal-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txm);
+}
+.cal-legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cal-detail {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+}
+.cal-detail-date {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 8px;
+}
+.cal-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.cal-detail-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--txm);
+  min-width: 60px;
+}
+.cal-detail-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--txs);
+}
+.cal-no-detail {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--txm);
+  font-size: 13px;
+}
+.cal-stats {
+  background: linear-gradient(135deg, #0f1e12, #0d1a10);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.cal-stat {
+  text-align: center;
+}
+.cal-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1.1;
+}
+.cal-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--txm);
+  margin-top: 3px;
+}
 </style>
 </head>
 <body>
 
-<div class="phone">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ══ DISCLAIMER OVERLAY ══ -->
+<div class="disclaimer-overlay" id="disclaimer-overlay" role="dialog" aria-modal="true" aria-labelledby="disc-heading">
+  <div class="disclaimer-box">
+    <div class="disc-logo">
+      <div class="disc-logo-mark" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M13 22V12" stroke="#6fcf7a" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M13 12C11 8 7 6 4 7c1 5 4 8 9 5" stroke="#6fcf7a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13 12c2-4 6-6 9-5-1 5-4 8-9 5" stroke="#b5e853" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="13" cy="6" r="2.5" fill="#6fcf7a" opacity="0.6"/>
+        </svg>
+      </div>
+      <div>
+        <div class="disc-app-name">Sprout</div>
+        <div class="disc-tagline">A little support, every step of the way.</div>
+        <div class="disc-nurse">Designed by nurses</div>
+      </div>
+    </div>
+
+    <h1 id="disc-heading" class="disc-title">A note before you begin</h1>
+
+    <p class="disc-body">
+      Sprout is a <strong>self-guided support tool</strong> for new and expecting mothers. It is designed to provide information, encouragement, and gentle check-in prompts.
+    </p>
+    <p class="disc-body">
+      <strong>Sprout is not a substitute for professional medical care.</strong> It does not provide diagnosis, treatment, or clinical advice. If you are struggling, please reach out to your OB, midwife, or a mental health professional.
+    </p>
+    <p class="disc-body">
+      <strong>Everything in Sprout — your check-ins, journal entries, and mood history — is stored only on this device.</strong> Nothing is ever uploaded, shared, or transmitted anywhere. No account is needed. Sprout is completely free because every mother deserves support, regardless of where she is or what she has access to.
+    </p>
+
+    <hr class="disc-divider" aria-hidden="true">
+
+    <div class="disc-crisis" role="note" aria-label="Crisis resources">
+      <div class="disc-crisis-title">If you are in crisis right now</div>
+      <div class="disc-crisis-body">
+        Call or text <strong>988</strong> — Suicide &amp; Crisis Lifeline, available 24/7.<br>
+        Postpartum Support International: <strong>1-800-944-4773</strong>
+      </div>
+    </div>
+
+    <button class="disc-agree-btn" id="disc-agree-btn" onclick="dismissDisclaimer()">
+      I understand — take me to Sprout
+    </button>
+  </div>
+</div>
+
+<div class="phone" id="main-content">
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="logo-mark">
-      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+    <div class="logo-mark" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
         <path d="M13 22V12" stroke="#6fcf7a" stroke-width="1.8" stroke-linecap="round"/>
         <path d="M13 12C11 8 7 6 4 7c1 5 4 8 9 5" stroke="#6fcf7a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M13 12c2-4 6-6 9-5-1 5-4 8-9 5" stroke="#b5e853" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -508,32 +1011,33 @@ body {
     <div>
       <div class="hd-title">Sprout</div>
       <div class="hd-sub">A little support, every step of the way.</div>
+      <div class="hd-nurse">Designed by nurses</div>
     </div>
   </header>
 
   <!-- CONTENT -->
-  <div class="content">
+  <div class="content" id="page-content">
 
-    <!-- ══ HOME SCREEN ══ -->
-    <div class="scr on" id="home">
+    <!-- ══ HOME ══ -->
+    <div class="scr on" id="home" role="tabpanel" aria-labelledby="nb-home">
 
       <div class="mood-hero">
-        <div class="mood-date" id="today-date"></div>
-        <div class="mood-q">How are you feeling right now?</div>
-        <div class="mood-btns">
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Good</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Okay</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Low</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Anxious</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Frustrated</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Numb</button>
+        <div class="mood-date" id="today-date" aria-live="polite"></div>
+        <div class="mood-q" id="home-mood-q">How are you feeling right now?</div>
+        <div class="mood-btns" role="group" aria-label="Select your current mood">
+          <button class="mb" onclick="selM(this,'home')" aria-pressed="false">Good</button>
+          <button class="mb" onclick="selM(this,'home')" aria-pressed="false">Okay</button>
+          <button class="mb" onclick="selM(this,'home')" aria-pressed="false">Low</button>
+          <button class="mb" onclick="selM(this,'home')" aria-pressed="false">Anxious</button>
+          <button class="mb" onclick="selM(this,'home')" aria-pressed="false">Frustrated</button>
+          <button class="mb" onclick="selM(this,'home')" aria-pressed="false">Numb</button>
         </div>
       </div>
 
-      <div class="affirm-card">
-        <div class="affirm-text" id="affirm-text">You are doing better than you think you are.</div>
+      <div class="affirm-card" onclick="nextAffirm()" tabindex="0" role="button" aria-label="Today's affirmation. Press to get a new one.">
+        <div class="affirm-text" id="affirm-text"></div>
         <div class="affirm-sub">Today's affirmation — tap to refresh</div>
-        <div style="position:absolute;bottom:14px;right:16px;cursor:pointer;" onclick="nextAffirm()">
+        <div style="position:absolute;bottom:14px;right:16px;" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4dd0c4" stroke-width="2" stroke-linecap="round">
             <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
           </svg>
@@ -542,118 +1046,118 @@ body {
 
       <div class="sec-label">Quick access</div>
 
-      <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="go('learn',document.querySelectorAll('.nb')[2])">
-        <div style="width:40px;height:40px;background:#1a2e1c;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="go('learn',document.getElementById('nb-learn'))" role="button" tabindex="0" aria-label="Go to Learn about PPD and PPA">
+        <div style="width:40px;height:40px;background:#1a2e1c;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b5e853" stroke-width="2" stroke-linecap="round">
             <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
           </svg>
         </div>
         <div>
-          <div style="font-weight:700;font-size:14px;color:var(--tx);">Learn about PPD & PPA</div>
+          <div style="font-weight:700;font-size:14px;color:var(--tx);">Learn about PPD &amp; PPA</div>
           <div style="font-size:12px;color:var(--txs);margin-top:2px;">What it is, what's normal, what to watch for</div>
         </div>
       </div>
 
-      <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="go('help',document.querySelectorAll('.nb')[4])">
-        <div style="width:40px;height:40px;background:#1a1020;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <div class="card" style="display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="go('help',document.getElementById('nb-help'))" role="button" tabindex="0" aria-label="Go to Get support and resources">
+        <div style="width:40px;height:40px;background:#1a1020;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f48fb1" stroke-width="2" stroke-linecap="round">
             <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .92h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
           </svg>
         </div>
         <div>
-          <div style="font-weight:700;font-size:14px;color:var(--tx);">Get support & resources</div>
+          <div style="font-weight:700;font-size:14px;color:var(--tx);">Get support &amp; resources</div>
           <div style="font-size:12px;color:var(--txs);margin-top:2px;">Crisis line, therapy options, and next steps</div>
         </div>
       </div>
 
     </div>
 
-    <!-- ══ CHECK-IN SCREEN ══ -->
-    <div class="scr" id="checkin">
+    <!-- ══ CHECK-IN ══ -->
+    <div class="scr" id="checkin" role="tabpanel" aria-labelledby="nb-checkin">
 
       <div class="sec-label">Daily check-in</div>
 
       <div class="card">
-        <div class="card-title">How are you feeling today?</div>
-        <div class="mood-btns" style="justify-content:flex-start;margin-top:10px;">
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Good</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Okay</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Low</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Anxious</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Frustrated</button>
-          <button class="mb" onclick="selM(this)" aria-pressed="false">Numb</button>
+        <div class="card-title" id="ci-mood-label">How are you feeling today?</div>
+        <div class="mood-btns" style="justify-content:flex-start;margin-top:10px;" role="group" aria-labelledby="ci-mood-label">
+          <button class="mb" onclick="selM(this,'ci')" aria-pressed="false">Good</button>
+          <button class="mb" onclick="selM(this,'ci')" aria-pressed="false">Okay</button>
+          <button class="mb" onclick="selM(this,'ci')" aria-pressed="false">Low</button>
+          <button class="mb" onclick="selM(this,'ci')" aria-pressed="false">Anxious</button>
+          <button class="mb" onclick="selM(this,'ci')" aria-pressed="false">Frustrated</button>
+          <button class="mb" onclick="selM(this,'ci')" aria-pressed="false">Numb</button>
         </div>
       </div>
 
       <div class="sec-label" style="margin-top:14px;">Any of these lately?</div>
-      <div class="card-body" style="font-size:12px;color:var(--txm);margin-bottom:10px;">Tap everything that applies — this is just for you.</div>
+      <p class="card-body" style="font-size:12px;color:var(--txm);margin-bottom:10px;">Tap everything that applies — this is just for you.</p>
 
-      <div class="symp-grid">
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Hard to sleep</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Sleeping too much</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Feeling empty</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Constant worry</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Crying often</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Mood swings</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>No appetite</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Feeling distant</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Irritable/angry</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Low energy</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Racing thoughts</button>
-        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot"></span>Hard to bond</button>
+      <div class="symp-grid" role="group" aria-label="Symptom checklist">
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Hard to sleep</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Sleeping too much</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Feeling empty</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Constant worry</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Crying often</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Mood swings</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>No appetite</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Feeling distant</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Irritable/angry</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Low energy</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Racing thoughts</button>
+        <button class="sb" onclick="togS(this)" aria-pressed="false"><span class="sb-dot" aria-hidden="true"></span>Hard to bond</button>
       </div>
 
-      <button class="save-btn" onclick="savL()">Save today's check-in</button>
-      <div class="save-confirm" id="lok">✓ Check-in saved. You showed up for yourself today.</div>
+      <button class="save-btn" onclick="savCI()">Save today's check-in</button>
+      <div class="save-confirm" id="lok" role="status" aria-live="polite">✓ Check-in saved. You showed up for yourself today.</div>
 
     </div>
 
-    <!-- ══ LEARN SCREEN ══ -->
-    <div class="scr" id="learn">
+    <!-- ══ LEARN ══ -->
+    <div class="scr" id="learn" role="tabpanel" aria-labelledby="nb-learn">
 
       <div class="sec-label">Understanding what you're going through</div>
 
       <div class="learn-card" id="lc1">
-        <div class="learn-card-hd" onclick="togLearn('lc1')">
-          <div class="learn-icon" style="background:#1a2e1c;">📖</div>
-          <div class="learn-card-title">What is postpartum depression (PPD)?</div>
-          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="learn-card-body">
+        <button class="learn-card-hd" onclick="togLearn('lc1')" aria-expanded="false" aria-controls="lc1-body">
+          <div class="learn-icon" style="background:#1a2e1c;" aria-hidden="true">📖</div>
+          <span class="learn-card-title">What is postpartum depression (PPD)?</span>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="learn-card-body" id="lc1-body" role="region">
           PPD is a mood disorder that can affect women after childbirth. It's more than the "baby blues" — it's a persistent sadness, emptiness, or disconnection that makes daily life hard. It affects roughly 1 in 7 new mothers and is not a character flaw or a sign of being a bad mother. It is a medical condition, and it is very treatable.
         </div>
       </div>
 
       <div class="learn-card" id="lc2">
-        <div class="learn-card-hd" onclick="togLearn('lc2')">
-          <div class="learn-icon" style="background:#0f2226;">🌊</div>
-          <div class="learn-card-title">Baby blues vs. PPD — what's the difference?</div>
-          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="learn-card-body">
+        <button class="learn-card-hd" onclick="togLearn('lc2')" aria-expanded="false" aria-controls="lc2-body">
+          <div class="learn-icon" style="background:#0f2226;" aria-hidden="true">🌊</div>
+          <span class="learn-card-title">Baby blues vs. PPD — what's the difference?</span>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="learn-card-body" id="lc2-body" role="region">
           <strong style="color:var(--teal);">Baby blues</strong> are very common (up to 80% of moms), start within a few days after birth, and usually resolve on their own within 2 weeks. Symptoms include weepiness, mood swings, and feeling overwhelmed.<br><br>
           <strong style="color:var(--pink);">PPD</strong> lasts longer than 2 weeks, is more intense, and interferes with your ability to function. If you're still struggling at 2 weeks postpartum or feel like things are getting worse rather than better — that's a signal to reach out to your OB or midwife.
         </div>
       </div>
 
       <div class="learn-card" id="lc3">
-        <div class="learn-card-hd" onclick="togLearn('lc3')">
-          <div class="learn-icon" style="background:#1a200f;">⚡</div>
-          <div class="learn-card-title">What is postpartum anxiety (PPA)?</div>
-          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="learn-card-body">
+        <button class="learn-card-hd" onclick="togLearn('lc3')" aria-expanded="false" aria-controls="lc3-body">
+          <div class="learn-icon" style="background:#1a200f;" aria-hidden="true">⚡</div>
+          <span class="learn-card-title">What is postpartum anxiety (PPA)?</span>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="learn-card-body" id="lc3-body" role="region">
           PPA is actually more common than PPD, but less talked about. Symptoms include constant worry, racing thoughts, difficulty relaxing, feeling on edge, and physical symptoms like a pounding heart or shortness of breath. Many women with PPA don't "feel depressed" — they just feel like something is terribly wrong, even when it's not. PPA is real, common, and treatable.
         </div>
       </div>
 
       <div class="learn-card" id="lc4">
-        <div class="learn-card-hd" onclick="togLearn('lc4')">
-          <div class="learn-icon" style="background:#1a1020;">💬</div>
-          <div class="learn-card-title">How to talk to your doctor about this</div>
-          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="learn-card-body">
+        <button class="learn-card-hd" onclick="togLearn('lc4')" aria-expanded="false" aria-controls="lc4-body">
+          <div class="learn-icon" style="background:#1a1020;" aria-hidden="true">💬</div>
+          <span class="learn-card-title">How to talk to your doctor about this</span>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="learn-card-body" id="lc4-body" role="region">
           It can feel hard to say the words out loud. You can start simple:<br><br>
           <em style="color:var(--teal);">"I haven't been feeling like myself since having the baby."</em><br><br>
           <em style="color:var(--teal);">"I've been really anxious and I'm having a hard time."</em><br><br>
@@ -662,25 +1166,25 @@ body {
       </div>
 
       <div class="learn-card" id="lc5">
-        <div class="learn-card-hd" onclick="togLearn('lc5')">
-          <div class="learn-icon" style="background:#0f1a10;">🌿</div>
-          <div class="learn-card-title">Will I always feel this way?</div>
-          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="learn-card-body">
+        <button class="learn-card-hd" onclick="togLearn('lc5')" aria-expanded="false" aria-controls="lc5-body">
+          <div class="learn-icon" style="background:#0f1a10;" aria-hidden="true">🌿</div>
+          <span class="learn-card-title">Will I always feel this way?</span>
+          <svg class="learn-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="learn-card-body" id="lc5-body" role="region">
           No. With treatment — which can include therapy, medication, support groups, or a combination — the overwhelming majority of women recover fully. Most start feeling significantly better within weeks of starting treatment. Recovery is real and it happens. You deserve to feel well.
         </div>
       </div>
 
     </div>
 
-    <!-- ══ SELF-CARE SCREEN ══ -->
-    <div class="scr" id="care">
+    <!-- ══ SELF-CARE ══ -->
+    <div class="scr" id="care" role="tabpanel" aria-labelledby="nb-care">
 
       <div class="sec-label">Small things that help</div>
 
       <div class="care-card">
-        <div class="care-icon" style="background:#0f2312;">🌬️</div>
+        <div class="care-icon" style="background:#0f2312;" aria-hidden="true">🌬️</div>
         <div>
           <div class="care-tag">Breathing</div>
           <div class="care-title">4-7-8 calming breath</div>
@@ -689,7 +1193,7 @@ body {
       </div>
 
       <div class="care-card">
-        <div class="care-icon" style="background:#1a1020;">🛏️</div>
+        <div class="care-icon" style="background:#1a1020;" aria-hidden="true">🛏️</div>
         <div>
           <div class="care-tag">Rest</div>
           <div class="care-title">Permission to rest</div>
@@ -698,16 +1202,16 @@ body {
       </div>
 
       <div class="care-card">
-        <div class="care-icon" style="background:#0f1f10;">🚶‍♀️</div>
+        <div class="care-icon" style="background:#0f1f10;" aria-hidden="true">🚶‍♀️</div>
         <div>
           <div class="care-tag">Movement</div>
           <div class="care-title">5-minute gentle walk</div>
-          <div class="care-body">Even 5 minutes outside — baby in tow or alone — can meaningfully shift your mood. Sunlight, fresh air, and gentle movement all signal to your brain that you are safe and things are okay. You don't need a workout. Just move a little.</div>
+          <div class="care-body">Even 5 minutes outside — baby in tow or alone — can meaningfully shift your mood. Sunlight, fresh air, and gentle movement all signal to your brain that you are safe and things are okay.</div>
         </div>
       </div>
 
       <div class="care-card">
-        <div class="care-icon" style="background:#0f2226;">💬</div>
+        <div class="care-icon" style="background:#0f2226;" aria-hidden="true">💬</div>
         <div>
           <div class="care-tag">Connection</div>
           <div class="care-title">Text one person today</div>
@@ -716,16 +1220,16 @@ body {
       </div>
 
       <div class="care-card">
-        <div class="care-icon" style="background:#1a1a10;">☕</div>
+        <div class="care-icon" style="background:#1a1a10;" aria-hidden="true">☕</div>
         <div>
           <div class="care-tag">Nourishment</div>
           <div class="care-title">Eat something real today</div>
-          <div class="care-body">Blood sugar crashes amplify anxiety and low mood. Even if you don't feel hungry, try to have something with protein — eggs, nuts, cheese, yogurt. You are feeding more than a body right now. You are feeding your resilience.</div>
+          <div class="care-body">Blood sugar crashes amplify anxiety and low mood. Even if you don't feel hungry, try to have something with protein — eggs, nuts, cheese, yogurt. You are feeding more than a body right now.</div>
         </div>
       </div>
 
       <div class="care-card">
-        <div class="care-icon" style="background:#1a2e1c;">🌙</div>
+        <div class="care-icon" style="background:#1a2e1c;" aria-hidden="true">🌙</div>
         <div>
           <div class="care-tag">Mindfulness</div>
           <div class="care-title">Name 5 things you can see</div>
@@ -735,19 +1239,123 @@ body {
 
     </div>
 
-    <!-- ══ HELP SCREEN ══ -->
-    <div class="scr" id="help">
+    <!-- ══ JOURNAL ══ -->
+    <div class="scr" id="journal" role="tabpanel" aria-labelledby="nb-journal">
 
-      <div class="crisis-banner">
+      <div class="journal-compose" aria-label="Write a journal entry">
+        <div class="journal-compose-hd">Write it out</div>
+        <div class="journal-compose-sub">This is just for you. No one else sees this.</div>
+
+        <div class="journal-prompt-row" role="group" aria-label="Choose a journal topic">
+          <button class="prompt-chip" onclick="setPrompt(this)">What I'm feeling</button>
+          <button class="prompt-chip" onclick="setPrompt(this)">One hard thing today</button>
+          <button class="prompt-chip" onclick="setPrompt(this)">One good thing</button>
+          <button class="prompt-chip" onclick="setPrompt(this)">What I need right now</button>
+          <button class="prompt-chip" onclick="setPrompt(this)">A letter to myself</button>
+          <button class="prompt-chip" onclick="setPrompt(this)">Letter to my baby</button>
+          <button class="prompt-chip prompt-chip-other" onclick="setPrompt(this)">Other...</button>
+        </div>
+
+        <!-- Other: custom topic input -->
+        <div id="other-topic-row" style="display:none;margin-bottom:10px;">
+          <label for="other-topic-input" style="font-size:12px;color:var(--txm);font-weight:600;display:block;margin-bottom:5px;">What do you want to write about?</label>
+          <div style="display:flex;gap:8px;">
+            <input
+              id="other-topic-input"
+              type="text"
+              placeholder="e.g. my birth story, a hard moment..."
+              style="flex:1;background:#0d1a0f;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--tx);outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--green)'"
+              onblur="this.style.borderColor='var(--border)'"
+              aria-label="Describe what you want to write about"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();generateOtherPrompt();}"
+            />
+            <button class="journal-save-btn" style="padding:9px 14px;font-size:13px;white-space:nowrap;flex-shrink:0;" onclick="generateOtherPrompt()" aria-label="Generate a writing prompt for your topic">Go</button>
+          </div>
+        </div>
+
+        <!-- Autogenerate prompt suggestion -->
+        <div id="autogen-row" style="display:none;margin-bottom:10px;" role="region" aria-label="Suggested writing prompt" aria-live="polite">
+          <div style="display:flex;align-items:flex-start;gap:10px;background:#0f2226;border:1px solid rgba(77,208,196,0.2);border-radius:10px;padding:11px 13px;">
+            <div style="flex:1;">
+              <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:0.5px;margin-bottom:4px;text-transform:uppercase;">Suggested prompt</div>
+              <div id="autogen-text" style="font-size:13px;color:var(--txs);line-height:1.6;font-style:italic;"></div>
+            </div>
+            <button onclick="useGeneratedPrompt()" style="background:#1a3a3e;border:1px solid rgba(77,208,196,0.3);border-radius:8px;padding:6px 11px;font-size:12px;font-weight:700;color:var(--teal);cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;flex-shrink:0;" aria-label="Use this suggested prompt">Use it</button>
+          </div>
+          <button onclick="refreshAutoPrompt()" style="background:none;border:none;font-size:11px;font-weight:600;color:var(--txm);cursor:pointer;padding:5px 2px;font-family:'DM Sans',sans-serif;text-decoration:underline;" aria-label="Try a different suggested prompt">Try another</button>
+        </div>
+
+        <label for="journal-input" class="sr-only">Journal entry text</label>
+        <textarea
+          id="journal-input"
+          class="journal-textarea"
+          placeholder="Start writing here… there's no right way to do this."
+          aria-label="Journal entry text"
+          rows="5"
+        ></textarea>
+
+        <button class="journal-save-btn" onclick="saveJournalEntry()">Save entry</button>
+        <div id="journal-confirm" class="save-confirm" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="sec-label">Your entries</div>
+      <div id="journal-list" aria-live="polite" aria-label="Journal entries"></div>
+
+    </div>
+
+    <!-- ══ CALENDAR ══ -->
+    <div class="scr" id="calendar" role="tabpanel" aria-labelledby="nb-calendar">
+
+      <div class="cal-stats" aria-label="Check-in statistics">
+        <div class="cal-stat">
+          <div class="cal-stat-num" id="stat-total">0</div>
+          <div class="cal-stat-label">Check-ins</div>
+        </div>
+        <div class="cal-stat">
+          <div class="cal-stat-num" id="stat-streak">0</div>
+          <div class="cal-stat-label">Day streak</div>
+        </div>
+        <div class="cal-stat">
+          <div class="cal-stat-num" id="stat-month">0</div>
+          <div class="cal-stat-label">This month</div>
+        </div>
+      </div>
+
+      <nav class="cal-nav" aria-label="Month navigation">
+        <button class="cal-nav-btn" id="cal-prev" onclick="changeMonth(-1)" aria-label="Previous month">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="cal-month-label" id="cal-month-label" aria-live="polite"></div>
+        <button class="cal-nav-btn" id="cal-next" onclick="changeMonth(1)" aria-label="Next month">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </nav>
+
+      <div class="cal-legend" role="list" aria-label="Mood color legend">
+        <div class="cal-legend-item" role="listitem"><div class="cal-legend-dot" style="background:#6fcf7a;" aria-hidden="true"></div>Good/Okay</div>
+        <div class="cal-legend-item" role="listitem"><div class="cal-legend-dot" style="background:#ffd54f;" aria-hidden="true"></div>Anxious/Frustrated</div>
+        <div class="cal-legend-item" role="listitem"><div class="cal-legend-dot" style="background:#f48fb1;" aria-hidden="true"></div>Low/Numb</div>
+      </div>
+
+      <div class="cal-grid" id="cal-grid" role="grid" aria-label="Monthly calendar"></div>
+
+      <div class="sec-label">Entry detail</div>
+      <div id="cal-detail-panel" aria-live="polite"></div>
+
+    </div>
+
+    <!-- ══ HELP ══ -->
+    <div class="scr" id="help" role="tabpanel" aria-labelledby="nb-help">
+
+      <div class="crisis-banner" role="alert">
         <div class="crisis-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f48fb1" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f48fb1" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           In crisis right now?
         </div>
-        <div class="crisis-body">
-          If you are having thoughts of harming yourself or others, please reach out immediately.
-        </div>
-        <div class="crisis-number">988 — Suicide & Crisis Lifeline</div>
-        <div style="font-size:12px;color:#c48fa0;margin-top:6px;">Call or text 988 · Available 24/7 · Free & confidential</div>
+        <div class="crisis-body">If you are having thoughts of harming yourself or others, please reach out immediately.</div>
+        <div class="crisis-number">988 — Suicide &amp; Crisis Lifeline</div>
+        <div style="font-size:12px;color:#c48fa0;margin-top:6px;">Call or text 988 · Available 24/7 · Free &amp; confidential</div>
         <div class="crisis-number" style="margin-top:8px;">Postpartum Support Intl: 1-800-944-4773</div>
         <div style="font-size:12px;color:#c48fa0;margin-top:6px;">Text or call · Specialists in maternal mental health</div>
       </div>
@@ -756,15 +1364,15 @@ body {
         <div class="next-steps-hd">Not a crisis, but need support?</div>
 
         <div class="next-step">
-          <div class="step-num">1</div>
+          <div class="step-num" aria-hidden="true">1</div>
           <div>
             <div class="step-title">Talk to your OB or midwife first</div>
-            <div class="step-desc">Your provider can screen you, refer you, and prescribe treatment if needed. You don't need to minimize what you're feeling — just tell them you haven't been yourself. It's okay to bring this up at any visit.</div>
+            <div class="step-desc">Your provider can screen you, refer you, and prescribe treatment if needed. You don't need to minimize what you're feeling — just tell them you haven't been yourself.</div>
           </div>
         </div>
 
         <div class="next-step">
-          <div class="step-num">2</div>
+          <div class="step-num" aria-hidden="true">2</div>
           <div>
             <div class="step-title">Call 211 for local help</div>
             <div class="step-desc">Free and confidential. Connects you to local mental health services, financial aid, and community support.</div>
@@ -773,7 +1381,7 @@ body {
         </div>
 
         <div class="next-step">
-          <div class="step-num">3</div>
+          <div class="step-num" aria-hidden="true">3</div>
           <div>
             <div class="step-title">Affordable therapy — Open Path</div>
             <div class="step-desc">Sessions from $30–$80 for those who qualify. No referral needed. Many therapists specialize in perinatal mental health.</div>
@@ -782,7 +1390,7 @@ body {
         </div>
 
         <div class="next-step">
-          <div class="step-num">4</div>
+          <div class="step-num" aria-hidden="true">4</div>
           <div>
             <div class="step-title">University training clinics</div>
             <div class="step-desc">Free or very low cost therapy with supervised graduate student therapists. Search "[your city] university counseling clinic" to find options near you.</div>
@@ -790,7 +1398,7 @@ body {
         </div>
 
         <div class="next-step">
-          <div class="step-num">5</div>
+          <div class="step-num" aria-hidden="true">5</div>
           <div>
             <div class="step-title">Postpartum Support International</div>
             <div class="step-desc">PSI has a provider directory of therapists who specialize in maternal mental health, plus free support groups.</div>
@@ -804,72 +1412,85 @@ body {
   </div><!-- /content -->
 
   <!-- NAV BAR -->
-  <nav class="nav-bar" role="tablist">
-    <button class="nb act" onclick="go('home',this)" role="tab" aria-selected="true" aria-label="Home">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  <nav class="nav-bar" role="tablist" aria-label="App navigation">
+    <button class="nb act" id="nb-home" onclick="go('home',this)" role="tab" aria-selected="true" aria-controls="home">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span class="nb-label">Home</span>
     </button>
-    <button class="nb" onclick="go('checkin',this)" role="tab" aria-selected="false" aria-label="Check in">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    <button class="nb" id="nb-checkin" onclick="go('checkin',this)" role="tab" aria-selected="false" aria-controls="checkin">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       <span class="nb-label">Check in</span>
     </button>
-    <button class="nb" onclick="go('learn',this)" role="tab" aria-selected="false" aria-label="Learn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+    <button class="nb" id="nb-journal" onclick="go('journal',this)" role="tab" aria-selected="false" aria-controls="journal">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      <span class="nb-label">Journal</span>
+    </button>
+    <button class="nb" id="nb-calendar" onclick="go('calendar',this)" role="tab" aria-selected="false" aria-controls="calendar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span class="nb-label">Calendar</span>
+    </button>
+    <button class="nb" id="nb-learn" onclick="go('learn',this)" role="tab" aria-selected="false" aria-controls="learn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
       <span class="nb-label">Learn</span>
     </button>
-    <button class="nb" onclick="go('care',this)" role="tab" aria-selected="false" aria-label="Self-care">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C10 8 6 6 3 7c1 5 4 8 9 5"/><path d="M12 12c2-4 6-6 9-5-1 5-4 8-9 5"/></svg>
+    <button class="nb" id="nb-care" onclick="go('care',this)" role="tab" aria-selected="false" aria-controls="care">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22V12"/><path d="M12 12C10 8 6 6 3 7c1 5 4 8 9 5"/><path d="M12 12c2-4 6-6 9-5-1 5-4 8-9 5"/></svg>
       <span class="nb-label">Self-care</span>
     </button>
-    <button class="nb" onclick="go('help',this)" role="tab" aria-selected="false" aria-label="Help">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .92h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    <button class="nb" id="nb-help" onclick="go('help',this)" role="tab" aria-selected="false" aria-controls="help">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .92h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
       <span class="nb-label">Help</span>
     </button>
   </nav>
 
 </div><!-- /phone -->
 
+<!-- visually hidden utility class -->
+<style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}</style>
+
 <script>
-// Set today's date
-const d = new Date();
-document.getElementById('today-date').textContent = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+// ── DATA STORE (localStorage) ──────────────────────────────────────
+const STORE_CI  = 'sprout_checkins_v1';
+const STORE_JNL = 'sprout_journal_v1';
 
-// Navigation
-function go(id, btn) {
-  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b => { b.classList.remove('act'); b.setAttribute('aria-selected','false'); });
-  document.getElementById(id).classList.add('on');
-  btn.classList.add('act');
-  btn.setAttribute('aria-selected','true');
+function loadCheckins() {
+  try { return JSON.parse(localStorage.getItem(STORE_CI) || '{}'); } catch { return {}; }
+}
+function saveCheckins(data) {
+  try { localStorage.setItem(STORE_CI, JSON.stringify(data)); } catch {}
+}
+function loadJournal() {
+  try { return JSON.parse(localStorage.getItem(STORE_JNL) || '[]'); } catch { return []; }
+}
+function saveJournal(data) {
+  try { localStorage.setItem(STORE_JNL, JSON.stringify(data)); } catch {}
 }
 
-// Mood buttons — single select
-function selM(el) {
-  const parent = el.closest('.mood-btns');
-  parent.querySelectorAll('.mb').forEach(b => { b.classList.remove('s'); b.setAttribute('aria-pressed','false'); });
-  el.classList.add('s'); el.setAttribute('aria-pressed','true');
+// ── DISCLAIMER ─────────────────────────────────────────────────────
+function dismissDisclaimer() {
+  const overlay = document.getElementById('disclaimer-overlay');
+  overlay.classList.add('hidden');
+  // Return focus to first focusable element in app
+  document.querySelector('.nb').focus();
 }
+// Trap focus inside disclaimer until dismissed
+document.getElementById('disclaimer-overlay').addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') return; // don't allow escape dismissal
+  const focusables = this.querySelectorAll('button, [href], input, textarea, [tabindex]:not([tabindex="-1"])');
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  if (e.key === 'Tab') {
+    if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+    else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+  }
+});
+// Focus the agree button after load
+window.addEventListener('load', () => { document.getElementById('disc-agree-btn').focus(); });
 
-// Symptom toggle
-function togS(el) {
-  const p = el.getAttribute('aria-pressed') === 'true';
-  el.classList.toggle('s'); el.setAttribute('aria-pressed', String(!p));
-}
+// ── DATE & AFFIRMATIONS ────────────────────────────────────────────
+const now = new Date();
+document.getElementById('today-date').textContent =
+  now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
 
-// Save confirm
-function savL() {
-  const d = document.getElementById('lok');
-  d.style.display = 'block';
-  setTimeout(() => { d.style.display = 'none'; }, 2800);
-}
-
-// Learn accordion
-function togLearn(id) {
-  const card = document.getElementById(id);
-  card.classList.toggle('open');
-}
-
-// Affirmations
 const affirms = [
   "You are doing better than you think you are.",
   "Asking for help is one of the bravest things a mother can do.",
@@ -880,14 +1501,388 @@ const affirms = [
   "The fact that you're here, trying, matters.",
   "Your feelings are valid. Your struggles are real. Your recovery is possible.",
 ];
-let aIdx = 0;
+let aIdx = Math.floor(Math.random() * affirms.length);
+document.getElementById('affirm-text').textContent = affirms[aIdx];
 function nextAffirm() {
   aIdx = (aIdx + 1) % affirms.length;
-  document.getElementById('affirm-text').textContent = affirms[aIdx];
+  const el = document.getElementById('affirm-text');
+  el.style.opacity = '0';
+  setTimeout(() => { el.textContent = affirms[aIdx]; el.style.opacity = '1'; el.style.transition = 'opacity 0.3s'; }, 150);
 }
-// Start on a random one
-aIdx = Math.floor(Math.random() * affirms.length);
-document.getElementById('affirm-text').textContent = affirms[aIdx];
+document.querySelector('.affirm-card').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nextAffirm(); }
+});
+
+// ── NAVIGATION ─────────────────────────────────────────────────────
+function go(id, btn) {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => {
+    b.classList.remove('act');
+    b.setAttribute('aria-selected','false');
+  });
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('act');
+  btn.setAttribute('aria-selected','true');
+  document.getElementById('page-content').scrollTop = 0;
+  // Refresh calendar when navigating to it
+  if (id === 'calendar') renderCalendar();
+  if (id === 'journal') renderJournal();
+}
+
+// ── MOOD SELECTION ─────────────────────────────────────────────────
+let currentMoodCI = '';
+function selM(el, ctx) {
+  const parent = el.closest('.mood-btns');
+  parent.querySelectorAll('.mb').forEach(b => { b.classList.remove('s'); b.setAttribute('aria-pressed','false'); });
+  el.classList.add('s'); el.setAttribute('aria-pressed','true');
+  if (ctx === 'ci') currentMoodCI = el.textContent.trim();
+}
+
+// ── SYMPTOM TOGGLE ─────────────────────────────────────────────────
+function togS(el) {
+  const pressed = el.getAttribute('aria-pressed') === 'true';
+  el.classList.toggle('s');
+  el.setAttribute('aria-pressed', String(!pressed));
+}
+function getSelectedSymptoms() {
+  return Array.from(document.querySelectorAll('#checkin .sb.s')).map(b => b.textContent.trim());
+}
+
+// ── SAVE CHECK-IN ──────────────────────────────────────────────────
+function savCI() {
+  const mood = currentMoodCI;
+  const syms = getSelectedSymptoms();
+  const dateKey = isoDate(new Date());
+  const checkins = loadCheckins();
+  checkins[dateKey] = { mood, symptoms: syms, ts: Date.now() };
+  saveCheckins(checkins);
+
+  const msg = document.getElementById('lok');
+  msg.style.display = 'block';
+  msg.textContent = '✓ Check-in saved. You showed up for yourself today.';
+  setTimeout(() => { msg.style.display = 'none'; }, 2800);
+
+  // Reset
+  currentMoodCI = '';
+  document.querySelectorAll('#checkin .mb').forEach(b => { b.classList.remove('s'); b.setAttribute('aria-pressed','false'); });
+  document.querySelectorAll('#checkin .sb').forEach(b => { b.classList.remove('s'); b.setAttribute('aria-pressed','false'); });
+  renderCalendar();
+  updateStats();
+}
+
+// ── LEARN ACCORDION ────────────────────────────────────────────────
+function togLearn(id) {
+  const card = document.getElementById(id);
+  const btn = card.querySelector('.learn-card-hd');
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
+
+// ── JOURNAL ────────────────────────────────────────────────────────
+
+// Bank of auto-generated prompts keyed by topic
+const promptBank = {
+  "What I'm feeling": [
+    "Right now, I'm feeling... and I think it started when...",
+    "If my feelings today had a color, they would be... because...",
+    "One word that describes how I feel today is... Here's why...",
+    "Something I haven't been able to say out loud is...",
+    "My body feels... My heart feels... My mind feels...",
+  ],
+  "One hard thing today": [
+    "One thing that was hard today was... and what made it harder was...",
+    "I struggled with... today. What I wish someone had said to me was...",
+    "The moment today when I felt most overwhelmed was... Here's what happened...",
+    "Something I'm trying to get through right now is...",
+    "Today was hard because... What I needed but didn't have was...",
+  ],
+  "One good thing": [
+    "One good thing that happened today, even if it was small, was...",
+    "A moment today that I want to remember is...",
+    "Something that made me smile or feel a little lighter today was...",
+    "One thing I'm proud of myself for today, even if no one else noticed, is...",
+    "A tiny thing that felt like enough today was...",
+  ],
+  "What I need right now": [
+    "What I really need right now is... and the reason I haven't asked for it is...",
+    "If I could ask for one thing today, it would be...",
+    "The person I most wish I could call right now is... because...",
+    "Something I keep putting off that I actually need is...",
+    "If I could give myself permission to do one thing today, it would be...",
+  ],
+  "A letter to myself": [
+    "Dear me, I want you to know that you are doing better than you think. Here's the proof...",
+    "Dear me, the thing I most need to hear right now is...",
+    "Dear me, I'm proud of you for... even though it didn't feel like much.",
+    "Dear future me, I want you to remember that right now...",
+    "Dear me, I forgive you for... because...",
+  ],
+  "Letter to my baby": [
+    "My sweet baby, I want you to know that the moment I first saw you...",
+    "Little one, today was hard. But when I look at you I feel...",
+    "Baby, I want you to know that even on the days when I feel lost, I...",
+    "To my baby: the thing I dream for you most is...",
+    "Dear baby, I'm learning how to be your mom. Here's what I've figured out so far...",
+    "My love, today I watched you... and I thought...",
+    "Baby, I want to tell you about the day you were born...",
+  ],
+  "Other": [
+    "I want to write about this because...",
+    "When I think about this, the first thing that comes up is...",
+    "This is something I've been carrying. Here's the full story...",
+    "I haven't talked about this with anyone, but...",
+    "The thing I most want to get out of my head and onto the page is...",
+  ],
+};
+
+let currentPromptTopic = '';
+let currentAutoPromptIdx = 0;
+
+function setPrompt(chip) {
+  const label = chip.textContent.trim().replace(/\u2019/g, "'").replace(/\.\.\.$/, '').trim();
+  const isOther = label === 'Other';
+
+  // Highlight selected chip
+  document.querySelectorAll('.prompt-chip').forEach(c => {
+    c.style.borderColor = '';
+    c.style.color = '';
+  });
+  chip.style.borderColor = 'var(--green)';
+  chip.style.color = 'var(--green)';
+
+  // Show/hide Other input
+  document.getElementById('other-topic-row').style.display = isOther ? 'block' : 'none';
+  if (isOther) {
+    document.getElementById('autogen-row').style.display = 'none';
+    document.getElementById('other-topic-input').focus();
+    currentPromptTopic = 'Other';
+    return;
+  }
+
+  currentPromptTopic = label;
+  showAutoPrompt(label);
+}
+
+function showAutoPrompt(topic) {
+  const bank = promptBank[topic] || promptBank['Other'];
+  currentAutoPromptIdx = Math.floor(Math.random() * bank.length);
+  document.getElementById('autogen-text').textContent = bank[currentAutoPromptIdx];
+  document.getElementById('autogen-row').style.display = 'block';
+}
+
+function refreshAutoPrompt() {
+  const bank = promptBank[currentPromptTopic] || promptBank['Other'];
+  currentAutoPromptIdx = (currentAutoPromptIdx + 1) % bank.length;
+  const el = document.getElementById('autogen-text');
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = bank[currentAutoPromptIdx];
+    el.style.transition = 'opacity 0.25s';
+    el.style.opacity = '1';
+  }, 150);
+}
+
+function generateOtherPrompt() {
+  const input = document.getElementById('other-topic-input').value.trim();
+  const topic = input || 'Other';
+  // Pick a contextual starter based on their custom input
+  const starters = [
+    `I want to write about "${topic}" because...`,
+    `When I think about ${topic}, the first thing that comes up is...`,
+    `${topic} has been on my mind. Here's what I haven't been able to say yet...`,
+    `Something about ${topic} that surprised me was...`,
+    `The part of ${topic} that still feels unfinished is...`,
+  ];
+  currentPromptTopic = 'Other';
+  currentAutoPromptIdx = Math.floor(Math.random() * starters.length);
+  // Temporarily override bank for this topic
+  promptBank['Other'] = starters;
+  document.getElementById('autogen-text').textContent = starters[currentAutoPromptIdx];
+  document.getElementById('autogen-row').style.display = 'block';
+}
+
+function useGeneratedPrompt() {
+  const text = document.getElementById('autogen-text').textContent;
+  const ta = document.getElementById('journal-input');
+  if (!ta.value.trim()) {
+    ta.value = text + '\n';
+  } else {
+    ta.value += '\n\n' + text + '\n';
+  }
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  document.getElementById('autogen-row').style.display = 'none';
+}
+function saveJournalEntry() {
+  const ta = document.getElementById('journal-input');
+  const text = ta.value.trim();
+  if (!text) return;
+  const entries = loadJournal();
+  const mood = currentMoodCI || '';
+  entries.unshift({ id: Date.now(), date: isoDate(new Date()), ts: Date.now(), text, mood });
+  saveJournal(entries);
+  ta.value = '';
+
+  const conf = document.getElementById('journal-confirm');
+  conf.style.display = 'block';
+  conf.textContent = '✓ Entry saved.';
+  setTimeout(() => { conf.style.display = 'none'; }, 2200);
+  renderJournal();
+}
+function deleteJournalEntry(id) {
+  let entries = loadJournal();
+  entries = entries.filter(e => e.id !== id);
+  saveJournal(entries);
+  renderJournal();
+}
+function renderJournal() {
+  const list = document.getElementById('journal-list');
+  const entries = loadJournal();
+  if (!entries.length) {
+    list.innerHTML = '<div class="journal-empty">Your entries will appear here.<br>Start by writing something above.</div>';
+    return;
+  }
+  list.innerHTML = entries.map(e => {
+    const d = new Date(e.ts);
+    const dateStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    const timeStr = d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    const moodBadge = e.mood ? `<span class="journal-entry-mood">${escHtml(e.mood)}</span>` : '';
+    return `
+    <article class="journal-entry" aria-label="Journal entry from ${dateStr}">
+      <button class="journal-delete" onclick="deleteJournalEntry(${e.id})" aria-label="Delete entry from ${dateStr}">✕</button>
+      <div class="journal-entry-date">${dateStr} · ${timeStr}</div>
+      ${moodBadge}
+      <div class="journal-entry-text">${escHtml(e.text)}</div>
+    </article>`;
+  }).join('');
+}
+
+// ── CALENDAR ───────────────────────────────────────────────────────
+let calYear = now.getFullYear();
+let calMonth = now.getMonth();
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+const moodColor = {
+  'Good':      '#6fcf7a',
+  'Okay':      '#6fcf7a',
+  'Anxious':   '#ffd54f',
+  'Frustrated':'#ffd54f',
+  'Low':       '#f48fb1',
+  'Numb':      '#f48fb1',
+};
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const checkins = loadCheckins();
+  const label = document.getElementById('cal-month-label');
+  label.textContent = `${MONTHS[calMonth]} ${calYear}`;
+
+  const grid = document.getElementById('cal-grid');
+  const today = isoDate(new Date());
+
+  // Day-of-week headers
+  let html = DAYS.map(d => `<div class="cal-dow" role="columnheader" aria-label="${d}">${d}</div>`).join('');
+
+  // First day offset
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    html += `<div class="cal-day empty" aria-hidden="true"></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const entry = checkins[key];
+    const isToday = key === today;
+    let cls = 'cal-day';
+    if (isToday) cls += ' today';
+    if (entry) cls += ' has-entry';
+    const dot = entry ? `<span class="mood-dot" style="background:${moodColor[entry.mood]||'#6fcf7a'};" aria-hidden="true"></span>` : '';
+    const ariaLabel = entry ? `${d}, has check-in, mood: ${entry.mood}` : `${d}`;
+    const tabIdx = entry ? 'tabindex="0"' : '';
+    const clickAttr = entry ? `onclick="showCalDetail('${key}')"` : '';
+    const keyAttr = entry ? `onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showCalDetail('${key}');}"` : '';
+    const role = entry ? 'button' : 'gridcell';
+    html += `<div class="${cls}" role="${role}" aria-label="${ariaLabel}" ${tabIdx} ${clickAttr} ${keyAttr}>${d}${dot}</div>`;
+  }
+
+  grid.innerHTML = html;
+  updateStats();
+
+  // Default: show today's detail if exists
+  if (checkins[today]) showCalDetail(today);
+  else document.getElementById('cal-detail-panel').innerHTML = '<div class="cal-no-detail">Tap a highlighted day to see its check-in.</div>';
+}
+
+function showCalDetail(key) {
+  const checkins = loadCheckins();
+  const entry = checkins[key];
+  if (!entry) return;
+  const d = new Date(key + 'T12:00:00');
+  const dateStr = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const sympHtml = entry.symptoms && entry.symptoms.length
+    ? `<div class="journal-entry-symptoms" aria-label="Symptoms logged">${entry.symptoms.map(s=>`<span class="jxs-chip">${escHtml(s)}</span>`).join('')}</div>`
+    : '<span style="font-size:12px;color:var(--txm);">No symptoms logged</span>';
+  document.getElementById('cal-detail-panel').innerHTML = `
+    <div class="cal-detail" aria-label="Check-in details for ${dateStr}">
+      <div class="cal-detail-date">${dateStr}</div>
+      <div class="cal-detail-row">
+        <span class="cal-detail-label">Mood</span>
+        <span class="cal-detail-value" style="color:${moodColor[entry.mood]||'var(--txs)'};">${entry.mood || '—'}</span>
+      </div>
+      <div class="cal-detail-row" style="align-items:flex-start;">
+        <span class="cal-detail-label">Symptoms</span>
+        <div style="flex:1;">${sympHtml}</div>
+      </div>
+    </div>`;
+}
+
+function updateStats() {
+  const checkins = loadCheckins();
+  const keys = Object.keys(checkins).sort();
+  const total = keys.length;
+
+  // Month count
+  const monthPrefix = `${calYear}-${String(calMonth+1).padStart(2,'0')}`;
+  const monthCount = keys.filter(k => k.startsWith(monthPrefix)).length;
+
+  // Streak (consecutive days ending today)
+  let streak = 0;
+  const todayKey = isoDate(new Date());
+  let checkDate = new Date();
+  while (true) {
+    const k = isoDate(checkDate);
+    if (checkins[k]) { streak++; checkDate.setDate(checkDate.getDate() - 1); }
+    else break;
+    if (streak > 365) break;
+  }
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-streak').textContent = streak;
+  document.getElementById('stat-month').textContent = monthCount;
+}
+
+// ── UTILITIES ──────────────────────────────────────────────────────
+function isoDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ───────────────────────────────────────────────────────────
+renderJournal();
+renderCalendar();
 </script>
 </body>
 </html>
